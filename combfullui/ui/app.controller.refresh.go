@@ -6,7 +6,7 @@ import "strings"
 import "crypto/rand"
 import "encoding/binary"
 
-func (a *AppHome) controller_repaint_str(i *AppImport, str string) bool {
+func (a *AppHome) controller_repaint_str(i *AppImport, w *AppWallet, str string) bool {
 	data := Parse(str)
 	if data == nil {
 		return false
@@ -30,8 +30,12 @@ func (a *AppHome) controller_repaint_str(i *AppImport, str string) bool {
 	}
 	if data.Testnet {
 		Document.Get("body").Set("style", "background-color:#AAFFAA")
+		Undisplay(w.genmain)
+		DisplayInline(w.gentest)
 	} else {
 		Document.Get("body").Set("style", "background-color:white")
+		Undisplay(w.gentest)
+		DisplayInline(w.genmain)
 	}
 	if data.ShutdownButton {
 		DisplayBlock(a.off)
@@ -55,13 +59,13 @@ func (a *AppHome) controller_repaint_str(i *AppImport, str string) bool {
 	return data.OutOfSync
 }
 
-func (a *AppHome) controller_refresh(i *AppImport, freq int) {
+func (a *AppHome) controller_refresh(i *AppImport, w *AppWallet, freq int) {
 	go Call(backend, "main.js", func(str string) {
-		if a.controller_repaint_str(i, str) && freq == 1 &&
+		if a.controller_repaint_str(i, w, str) && freq == 1 &&
 			(strings.Contains(backend, "localhost") ||
 			strings.Contains(backend, "127.0.0.1")) {
 			SetTimeout(func(JQuery) {
-				a.controller_refresh(i, freq)
+				a.controller_refresh(i, w, freq)
 			}, 100)
 		}
 	})

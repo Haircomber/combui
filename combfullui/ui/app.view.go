@@ -9,7 +9,7 @@ import "sort"
 import "strconv"
 
 // redrawJsMainPageData is called when js loads main.js or when this wasm loads and inits
-func (a *AppHome) redrawJsMainPageData(i *AppImport) {
+func (a *AppHome) redrawJsMainPageData(i *AppImport, w *AppWallet) {
 	data := string(a.mainLoad.InnerHTML())
 	if data == "DONE" {
 		return
@@ -17,10 +17,10 @@ func (a *AppHome) redrawJsMainPageData(i *AppImport) {
 	rawDecodedText, err := base64.StdEncoding.DecodeString(data)
 	SetValue(a.mainLoad, "DONE")
 	if err != nil {
-		a.controller_refresh(i, 1)
+		a.controller_refresh(i, w, 1)
 		return
 	}
-	a.controller_repaint_str(i, string(rawDecodedText))
+	a.controller_repaint_str(i, w, string(rawDecodedText))
 }
 
 func (a *App) loadCss() {
@@ -42,11 +42,12 @@ func row_slash(k string, v0, v1, v2 uint64) string {
 	return "<td name='key' class='spent'>" + k + "</td><td name='tx' class='pending'>" + fmt.Sprint(v0) + "/1</td><td name='tx' class='rejected'>" + fmt.Sprint(v1) + "/1</td><td name='bal'>" + fmt.Sprint(v2) + "/1</td>"
 }
 
-func row_icon(icon, k string, v uint64) string {
-	return "<td><i class='fa-solid fa-"+icon+"'></i></td><td name='key' class='unspent'>" + k + "</td><td name='bal'>" + fmt.Sprintf("%d.%08d", combs(v), nats(v)) + "</td>"
+func row_icon(icon, k string, v uint64, icon2, text2, action2 string) string {
+	return "<td onclick='this.parentElement.querySelector(\"td.unspent\")?.querySelector(\"a\")?.click();'><i class='fa-solid fa-" + icon + "'></i></td><td name='key' class='unspent'><a name='unspent' href='javascript:void(0)'>" + k + "</a></td><td name='bal'>" + fmt.Sprintf("%d.%08d", combs(v), nats(v)) + 
+		"<a class='w3-btn w3-purple w3-ripple' href='javascript:void(0)' onclick='document.getElementById(\""+action2+"\").click(this.parentElement.parentElement.querySelector(\"td.unspent\")?.querySelector(\"a\")?.click())'><i class='fa-solid fa-" + icon2 + "'></i> " + text2 + "</a></td>"
 }
 func rowspent_icon(icon, k string, v uint64) string {
-	return "<td><i class='fa-solid fa-"+icon+"'></i></td><td name='key' class='spent'>" + k + "</td><td name='bal'>" + fmt.Sprintf("%d.%08d", combs(v), nats(v)) + "</td>"
+	return "<td onclick='this.parentElement.querySelector(\"td.spent\")?.querySelector(\"a\")?.click();'><i class='fa-solid fa-" + icon + "'></i></td><td name='key' class='spent'><a name='spent' href='javascript:void(0)'>" + k + "</a></td><td name='bal'>" + fmt.Sprintf("%d.%08d", combs(v), nats(v)) + "</td>"
 }
 
 func row(k string, v uint64) string {
@@ -86,11 +87,13 @@ func (a *AppWallet) rebalance_wallet() {
 	a_key := Value(a.key)
 
 	if len(a_key) > 0 {
-		a.controller_stealth(a_key, uint64(n-1))
+		a.controller_stealth(a_key, uint64(n-1), len(Value(a.stealthbase)) != 64)
 	}
 }
 
 func (a *AppWallet) ViewKeys(opened string) {
+
+	var payText = a.spend.InnerHTML()
 
 	var strs []string
 	for k := range keysbalances {
@@ -108,7 +111,7 @@ func (a *AppWallet) ViewKeys(opened string) {
 
 		v := keysbalances[k]
 		if v > 0 {
-			AppendChildClass(a.keystable, "tr", row_icon("key", k, v), opened_class)
+			AppendChildClass(a.keystable, "tr", row_icon("key", k, v, "shopping-basket", payText, "wallet-spend"), opened_class)
 		}
 	}
 	for _, k := range strs {
@@ -124,13 +127,20 @@ func (a *AppWallet) ViewKeys(opened string) {
 			} else if _, ok := tx[k]; ok {
 				AppendChildClass(a.keystable, "tr", rowspent_icon("key", k, v), opened_class)
 			} else {
-				AppendChildClass(a.keystable, "tr", row_icon("key", k, v), opened_class)
+				AppendChildClass(a.keystable, "tr", row_icon("key", k, v, "shopping-basket", payText, "wallet-spend"), opened_class)
 			}
 		}
 	}
 }
 
-func (a *AppWallet) ViewStealth(opened string, active_page uint64) {
+func (a *AppWallet) ViewStealth(opened string, active_page uint64, isClaimingVisible bool) {
+
+	var sweepText = a.stealthsweep.InnerHTML()
+
+	var icon = "shield"
+	if isClaimingVisible {
+		icon = "gem"
+	}
 
 	var strings []string
 	for k := range stealthbalances {
@@ -140,31 +150,39 @@ func (a *AppWallet) ViewStealth(opened string, active_page uint64) {
 
 	a.stealthtable.SetInnerHTML("")
 	for _, k := range strings {
-		var opened_class string
-		if k == opened {
-			opened_class = "opened"
-		}
 
 		v := stealthbalances[k]
 		if v > 0 {
+			var kk = k
+			if isClaimingVisible {
+				kk = bech32get(commitment(kk))
+			}
+			var opened_class string
+			if kk == opened {
+				opened_class = "opened"
+			}
 			if len(stealthused[k]) == 0 {
-				AppendChildClass(a.stealthtable, "tr", row_icon("shield", k, v), opened_class)
+				AppendChildClass(a.stealthtable, "tr", row_icon(icon, kk, v, "hand-sparkles", sweepText, "wallet-sweep"), opened_class)
 			} else {
-				AppendChildClass(a.stealthtable, "tr", rowspent_icon("shield", k, v), opened_class)
+				AppendChildClass(a.stealthtable, "tr", rowspent_icon(icon, kk, v), opened_class)
 			}
 		}
 	}
 	for _, k := range strings {
-		var opened_class string
-		if k == opened {
-			opened_class = "opened"
-		}
 		v := stealthbalances[k]
 		if v == 0 {
+			var kk = k
+			if isClaimingVisible {
+				kk = bech32get(commitment(kk))
+			}
+			var opened_class string
+			if kk == opened {
+				opened_class = "opened"
+			}
 			if len(stealthused[k]) == 0 {
-				AppendChildClass(a.stealthtable, "tr", row_icon("shield", k, v), opened_class)
+				AppendChildClass(a.stealthtable, "tr", row_icon(icon, kk, v, "hand-sparkles", sweepText, "wallet-sweep"), opened_class)
 			} else {
-				AppendChildClass(a.stealthtable, "tr", rowspent_icon("shield", k, v), opened_class)
+				AppendChildClass(a.stealthtable, "tr", rowspent_icon(icon, kk, v), opened_class)
 			}
 		}
 	}

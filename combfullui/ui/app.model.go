@@ -136,6 +136,17 @@ func NewApp() *App {
 
 			jQuery("#wallet-stealth-half"),
 
+			jQuery("#wallet-hint"),
+
+			jQuery("#wallet-stealths-claimings"),
+			jQuery("#wallet-stealth-256-btn"),
+			jQuery("#wallet-stealth-16-btn"),
+			jQuery("#wallet-claim-256-btn"),
+			jQuery("#wallet-claim-16-btn"),
+			jQuery("#wallet-claiming-visible"),
+
+			jQuery("#wallet-nochange-visible"),
+
 			false,
 			0,
 		},
@@ -236,10 +247,10 @@ type AppImport struct {
 	filebug     JQuery
 	fileloadbug JQuery
 
-	decidershardfork JQuery
-	decidershardforkonsorry JQuery
+	decidershardfork         JQuery
+	decidershardforkonsorry  JQuery
 	decidershardforkoffsorry JQuery
-	decidershardforkhider JQuery
+	decidershardforkhider    JQuery
 
 	click   bool
 	taptime int64
@@ -252,19 +263,19 @@ type AppModelSuccess struct {
 }
 
 type AppWallet struct {
-	keystable    JQuery
-	key          JQuery
-	keychange    JQuery
-	claimkey     JQuery
-	form         JQuery
-	genmain      JQuery
-	gentest      JQuery
-	usedcheck      JQuery
-	genmainspin  JQuery
-	gentestspin  JQuery
-	usedcheckspin  JQuery
-	keycount     JQuery
-	password     JQuery
+	keystable     JQuery
+	key           JQuery
+	keychange     JQuery
+	claimkey      JQuery
+	form          JQuery
+	genmain       JQuery
+	gentest       JQuery
+	usedcheck     JQuery
+	genmainspin   JQuery
+	gentestspin   JQuery
+	usedcheckspin JQuery
+	keycount      JQuery
+	password      JQuery
 
 	stealthtable JQuery
 
@@ -280,10 +291,10 @@ type AppWallet struct {
 	stealthkey    JQuery
 	claimstealth  JQuery
 
-	claimstealthcount  JQuery
-	claimstealthname   JQuery
-	claimstealthurl    JQuery
-	claimstealthcopy    JQuery
+	claimstealthcount JQuery
+	claimstealthname  JQuery
+	claimstealthurl   JQuery
+	claimstealthcopy  JQuery
 
 	change       JQuery
 	stealthsweep JQuery
@@ -294,14 +305,25 @@ type AppWallet struct {
 	stealthspaginatorpage JQuery
 	stealthspaginatorgoto JQuery
 
-	usedstealthcheck      JQuery
-	usedstealthcheckspin  JQuery
+	usedstealthcheck     JQuery
+	usedstealthcheckspin JQuery
 
 	stealthbase         JQuery
 	stealthstealth      JQuery
 	stealthstealthsweep JQuery
 
 	stealthhalf JQuery
+
+	hint JQuery
+
+	stealthsclaimings     JQuery
+	stealth256btn         JQuery
+	stealth16btn          JQuery
+	claim256btn           JQuery
+	claim16btn            JQuery
+	walletclaimingvisible JQuery
+
+	nochangevisible JQuery
 
 	click   bool
 	taptime int64

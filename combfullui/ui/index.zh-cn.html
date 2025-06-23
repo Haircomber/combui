@@ -115,14 +115,14 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 <div id="main" style="display:none">
 
 	<div class="w3-bar w3-magenta">
-	  <div class="w3-bar-item"><b>头发钱包</b></div>
-	  <a href="#" id="mainbutton-home" class="w3-bar-item w3-button"><i class="fas fa-home"></i> 主页</a>
+	  <div class="w3-bar-item"><b>头发</b></div>
 	  <a href="#" id="mainbutton-wallet" class="w3-bar-item w3-button"><i class="fas fa-wallet"></i> 钱包</a>
 	  <a href="#" id="mainbutton-pay" class="w3-bar-item w3-button"><i class="fas fa-shopping-basket"></i> 付费</a>
 	  <a href="#" id="mainbutton-imports" class="w3-bar-item w3-button"><i class="fas fa-folder-minus"></i> 导出</a>
 	  <a href="#" id="mainbutton-coins" class="w3-bar-item w3-button"><i class="fas fa-coins"></i> 硬币</a>
 	  <a href="#" id="mainbutton-docs" class="w3-bar-item w3-button"><i class="fas fa-book"></i> 文档</a>
 	  <a href="#" id="mainbutton-chart" class="w3-bar-item w3-button"><i class="fas fa-chart-line"></i> 图表</a>
+	  <a href="#" id="mainbutton-home" class="w3-bar-item w3-button"><i class="fas fa-wifi"></i> 网络</a>
 	  <div class="dropdown w3-right">
 	    <button class="dropbtn">英语（我们）
 	      <i class="fa fa-caret-down"></i>
@@ -137,7 +137,7 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 	</div>
 <div id="body-home">
 	<div class="w3-row-padding">
-          <h1>头发钱包</h1>
+          <h1>发型网络</h1>
 	    <div class="w3-half">
 		<div class="w3-panel w3-red w3-display-container" id="home-outofsync">
   		  <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright">×</span>
@@ -305,14 +305,19 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 </div>
 <div id="body-wallet" style="display:none">
 	<div class="w3-row-padding">
+          <h1>发夹钱包</h1>
 	    <div class="w3-half">
-		<h3>键</h3>
-		
+		<h3>键 <span id="wallet-hint" style="display:none">单击查找或使用的键</span></h3>
+		<div class="w3-panel w3-red w3-display-container" id="wallet-nochange-visible" style="display:none">
+		  <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright">×</span>
+		  <h2 style =“边缘右：42px;”>无更改地址警告</h2>
+		  <p>付款，生成一个用作更改的地址。</p>
+		</div> 
 		  <table class="w3-table w3-striped w3-border w3-centered">
 		   <thead>
 		    <tr>
-		      <th></th>
 		      <th>键</th>
+		      <th>地址</th>
 		      <th>平衡</th>
 		    </tr>
 		   </thead>
@@ -379,20 +384,21 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 		<div id="wallet-key-clicked" style="display:none">
 			<h3><i class="fa-solid fa-key"></i> 键</h3>
 
+
+			<label><i class="fa-solid fa-gem"></i> 比特币声称烧伤地址（付费330个SAT索赔，任何BTC都会丢失）</label>
+			<input readonly="readonly" class="w3-input w3-border" type="text" id="wallet-key-claim" />
+			<label><i class="fa-solid fa-eye"></i> 钥匙梳地址（如果共享，请揭示所有隐身地址）索赔）</label>
+			<input class="w3-input w3-border" type="text" id="wallet-key" />
+			<input class="w3-input w3-border" type="text" id="wallet-key-change" style="display:none" />
+			<input class="w3-input w3-border" type="text" id="wallet-stealth-base" style="display:none" />
 			<div class="w3-row-padding parent w3-card">
 				<div class="w3-half w3-panel"><img alt="barcode" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="  id="wallet-image2" />BTC</div>
 				<div class="w3-half w3-panel">梳子<img alt="barcode" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="  id="wallet-image" /></div>
 			</div>
-			<label>比特币密钥声称烧伤地址（付费330个SAT索赔，发送的任何BTC将丢失）</label>
-			<input readonly="readonly" class="w3-input w3-border" type="text" id="wallet-key-claim" />
-			<label>钥匙梳地址</label>
-			<input class="w3-input w3-border" type="text" id="wallet-key" />
-			<input class="w3-input w3-border" type="text" id="wallet-key-change" style="display:none" />
-			<input class="w3-input w3-border" type="text" id="wallet-stealth-base" style="display:none" />
 		    <div>
 			<button id="wallet-change" name="change" class="w3-btn w3-deep-orange w3-ripple">设置为更改</button>
 			<button id="wallet-spend" name="spend" class="w3-btn w3-magenta w3-ripple">付费</button>
-		        <button id="wallet-sweep" name="sweep" class="w3-btn w3-teal w3-ripple">扫荡隐身地址</button>
+		        <button id="wallet-sweep" name="sweep" class="w3-btn w3-teal w3-ripple">扫</button>
 		        <button id="wallet-stealth-used-check" class="w3-btn w3-indigo w3-ripple">
 			  <span class="div sk-fading-circle" id="wallet-stealth-used-check-spinner">
 			    <span class="div sk-circle1 sk-circle"></span>
@@ -413,15 +419,15 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 		</div>
 		
 		<div id="wallet-stealth-clicked" style="display:none">
-			<h3><i class="fa-solid fa-shield"></i> 隐身地址</h3>
+			<h3><i class="fa-solid fa-shield"></i> 隐形/索赔地址</h3>
 
 			<div class="w3-row-padding parent w3-card">
 				<div class="w3-half w3-panel"><img alt="barcode" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="  id="wallet-stealth-image2" />BTC</div>
 				<div class="w3-half w3-panel">梳子<img alt="barcode" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="  id="wallet-stealth-image" /></div>
 			</div>
-			<label>比特币隐身声称烧伤地址（付费330个SAT索赔，发送的任何BTC将丢失）</label>
+			<label><i class="fa-solid fa-gem"></i> 比特币声称烧伤地址（付费330个SAT索赔，任何BTC都会丢失）</label>
 			<input readonly="readonly" class="w3-input w3-border" type="text" id="wallet-stealth-claim-addr" />
-			<label>隐身梳子地址</label>
+			<label><i class="fa-solid fa-shield"></i> 隐形梳子地址</label>
 			<input readonly="readonly" class="w3-input w3-border" type="text" id="wallet-stealth-key" />
 			<label>宣称 Wall 宣称 Count</label>
 			<input class="w3-input w3-border" type="number" id="wallet-stealth-claim-count" value="0" min="0" max="9" />
@@ -431,7 +437,7 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 			<div class="w3-cell-row"><div class="w3-container w3-cell" style="width:100%;padding: 0px">
 			<input readonly="readonly" class="w3-input w3-border" type="text" id="wallet-stealth-claim-url" />
 			</div><div class="w3-container w3-cell" style="padding: 0px">
-			<button id="wallet-stealth-claim-copy" name="copyurl" class="w3-btn w3-blue w3-ripple">Copy</button>
+			<button id="wallet-stealth-claim-copy" name="copyurl" class="w3-btn w3-blue w3-ripple">复制</button>
 			</div></div>
 		    <div>
 			<button id="wallet-stealth-stealth" name="stealth" class="w3-btn w3-green w3-ripple">隐形地址的隐身地址</button>
@@ -441,8 +447,20 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 		
 	    </div>
 	    <div class="w3-half" id="wallet-stealth-half" style="display:none">
-		<h3>隐身地址</h3>
-
+		<div class="w3-panel w3-red w3-display-container" id="wallet-claiming-visible" style="display:none">
+  		  <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright">×</span>
+		  <h2 style="margin-right: 42px;">声称发出警告</h2>
+		  <p>永远不要支付超过330个SAT来索取地址，您将失去比特币.</p>
+		</div> 
+		<h3>隐形/索赔地址</h3>
+		
+		<div>
+			<button style="display:none" id="wallet-stealth-16-btn" name="stealth" class="w3-btn w3-green w3-ripple"><i class="fa-solid fa-shield"></i> 16个隐形地址</button>
+			<button id="wallet-stealth-256-btn" name="stealth" class="w3-btn w3-green w3-ripple"><i class="fa-solid fa-shield"></i> 256个隐形地址</button>
+			<button style="display:none" id="wallet-claim-16-btn" name="stealth" class="w3-btn w3-green w3-ripple"><i class="fa-solid fa-gem"></i> 16索赔地址</button>
+			<button id="wallet-claim-256-btn" name="stealth" class="w3-btn w3-green w3-ripple"><i class="fa-solid fa-gem"></i> 256索赔地址</button>
+		</div>
+		<div id="wallet-stealths-claimings" style="display:none">
 		  <table class="w3-table w3-striped w3-border w3-centered">
 		   <thead>
 		    <tr>
@@ -468,12 +486,13 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 		  <input class="w3-bar-item" style="flex: 1;min-width:0" id="wallet-stealths-paginator-page" />
 		  <button class="w3-btn w3-bar-item w3-green" id="wallet-stealths-paginator-goto">»</button>
 		</div>
-
+		</div>
 	    </div>
 	</div>
 </div>
 <div id="body-pay" style="display:none">
 	<div class="w3-row-padding">
+          <h1>发型付款</h1>
 	    <div class="w3-half" id="pay-destinations">
 		<h3>付款目的地</h3>
 		  <table class="w3-table w3-striped w3-border w3-centered">
@@ -527,6 +546,7 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 </div>
 <div id="body-imports" style="display:none">
 	<div class="w3-row-padding">
+          <h1>发型出口/导入</h1>
 	    <div class="w3-half">
 
 		<h3>导出</h3>
@@ -658,6 +678,7 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 </div>
 <div id="body-coins" style="display:none">
 	<div class="w3-row-padding">
+          <h1>发型硬币</h1>
 	    <div class="w3-half">
 		<h3>主张</h3>
 
@@ -739,13 +760,14 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 </div>
 <div id="body-docs" style="display:none">
 	<div class="w3-row-padding">
+          <h1>发条文档</h1>
 		<h3>公共梳子协议文档</h3>
 
 		<a href="doc.html">查看公共梳子协议文档</a>
 
 		<h3>抵抗量子加密货币信息页面</h3>
 
-		<a href="https://wiki.haircomber.com">抵抗量子的加密货币发型</a>
+		<a href="https://wiki.haircomb.info">抵抗量子的加密货币发型</a>
 	</div>
 </div>
 
@@ -753,6 +775,7 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 <div id="body-chart" style="display:none">
 
 	<div class="w3-row-padding">
+	  <h1>发型竞标/图表</h1>
 		<h3>出价</h3>
 		<button id="chart-bids-reload-btn" class="w3-btn w3-blue">重新加载</button>
 		<button id="chart-bids-filter-btn" class="w3-btn w3-blue">筛选</button>

@@ -1,6 +1,11 @@
-# Combfullui v0.5.4
+# Combfullui v0.5.5
 
-* Testnet 4
+* Firefox: Use prefix length of 7
+* GUI: 
+  - Headlines
+  - Rename Home to Network
+  - Add hint on keys page after keygen
 
-Final release, thanks for your patience and enjoy
+
+In development
 --- 

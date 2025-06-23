@@ -7,7 +7,7 @@ import "time"
 
 func (a *App) bindEvents() {
 	a.menu.bindEvents(a.main)
-	a.home.bindEvents(a.export)
+	a.home.bindEvents(a.export, a.wallet)
 	a.coins.bindEvents(a.wallet)
 	a.export.bindEvents(a.wallet)
 	a.wallet.bindEvents(a.pay, a.main)
@@ -101,11 +101,11 @@ func (a *AppMain) bindEvents(s *AppMain) {
 
 var epoch uint64
 
-func (a *AppHome) bindEvents(i *AppImport) {
+func (a *AppHome) bindEvents(i *AppImport, w *AppWallet) {
 
 	// even if main.js load occurs after the wasm load, we want still redraw the mainpage
 	AddEventListener(a.mainLoad, "click", "target", func(this, target JQuery) {
-		a.redrawJsMainPageData(i)
+		a.redrawJsMainPageData(i, w)
 	})
 
 	AddEventListener(a.off, "touchstart", "target", func(this, target JQuery) {
@@ -157,14 +157,14 @@ func (a *AppHome) bindEvents(i *AppImport) {
 		var str = a.refreshFreq.InnerHTML()
 		epoch++
 		if strings.Contains(str, `e="1"`) {
-			a.controller_refresh(i, 1)
+			a.controller_refresh(i, w, 1)
 		} else if strings.Contains(str, `e="10"`) {
 			var again func(uint64)
 			again = func(my_epoch uint64) {
 				if epoch != my_epoch {
 					return
 				}
-				a.controller_refresh(i, 10)
+				a.controller_refresh(i, w, 10)
 				my_epoch = epoch
 				SetTimeout(func(JQuery) {
 					again(my_epoch)
@@ -177,7 +177,7 @@ func (a *AppHome) bindEvents(i *AppImport) {
 				if epoch != my_epoch {
 					return
 				}
-				a.controller_refresh(i, 60)
+				a.controller_refresh(i, w, 60)
 				my_epoch = epoch
 				SetTimeout(func(JQuery) {
 					again(my_epoch)
@@ -465,7 +465,12 @@ func (a *AppWallet) bindEvents(p *AppPay, s *AppMain) {
 	AddEventListener(a.keystable, "click", "target", func(this, target JQuery) {
 		var str = target.InnerHTML()
 		if len(str) != 64 {
-			return
+			if len(str) == 44+64+4 {
+				// remove a href
+				str = str[44 : 44+64]
+			} else {
+				return
+			}
 		}
 		if str == Value(a.key) {
 			return
@@ -490,7 +495,6 @@ func (a *AppWallet) bindEvents(p *AppPay, s *AppMain) {
 		SetSrc(a.image, QRCODE(str))
 		SetSrc(a.image2, QRCODE("bitcoin:"+str2+"?amount=0.00000330"))
 		SetValue(a.key, str)
-		SetValue(a.stealthbase, str)
 
 		if is_used2 {
 			HideX(a.image2)
@@ -523,24 +527,60 @@ func (a *AppWallet) bindEvents(p *AppPay, s *AppMain) {
 			}
 		}
 
-		// At this point, the key has been selected, so we can now display the stealth table.
-		// Let's use the default first page for the stealth table.
-		a.controller_stealth(str, 0) // This line calls the function to display the stealth address table.
-
-		DisplayBlock(a.stealthhalf) // Ensure the stealth table is visible.
-
-		SetValue(a.stealthkey, "")
-
-		SetValue(a.stealthspaginatorpage, "1") // Ensure he is on page 1
+		// At this point, the key has been selected, but the stealth table should collapse if visible
+		// Hide it
+		Undisplay(a.stealthsclaimings)
+		DisplayBlock(a.stealthhalf) // Ensure the stealth column is visible.
 
 		// repaint keys table
 
 		a.ViewKeys(str)
 	})
+
+	AddEventListener(a.stealth256btn, "click", "target", func(this, target JQuery) {
+		var str = Value(a.key)
+		SetValue(a.stealthbase, str)
+		DisplayBlock(a.stealthsclaimings)
+
+		// At this point, the key has been selected, so we can now display the stealth table.
+		// Let's use the default first page for the stealth table.
+		a.controller_stealth(str, 0, false) // This line calls the function to display the stealth address table.
+
+		SetValue(a.stealthkey, "")
+
+		SetValue(a.stealthspaginatorpage, "1") // Ensure he is on page 1
+
+	})
+
+	AddEventListener(a.claim256btn, "click", "target", func(this, target JQuery) {
+		DisplayBlock(a.walletclaimingvisible)
+
+		var str = Value(a.key)
+		SetValue(a.stealthbase, "")
+		DisplayBlock(a.stealthsclaimings)
+
+		// At this point, the key has been selected, so we can now display the stealth table.
+		// Let's use the default first page for the stealth table.
+		a.controller_stealth(str, 0, true) // This line calls the function to display the stealth address table.
+
+		SetValue(a.stealthkey, "")
+
+		SetValue(a.stealthspaginatorpage, "1") // Ensure he is on page 1
+
+	})
+
 	AddEventListener(a.stealthtable, "click", "target", func(this, target JQuery) {
 		var str = target.InnerHTML()
-		if len(str) != 64 {
-			return
+		if len(str) != 64 && len(str) != 62 {
+			if len(str) == 44+64+4 {
+				// remove a href
+				str = str[44 : 44+64]
+			} else if len(str) == 44+62+4 {
+				// remove a href
+				str = str[44 : 44+62]
+			} else {
+				return
+			}
 		}
 		if str == Value(a.stealthkey) {
 			return
@@ -555,11 +595,16 @@ func (a *AppWallet) bindEvents(p *AppPay, s *AppMain) {
 			return
 		}
 
-		var commitstr = commitment(str)
-		var str2 = bech32get(commitstr)
-		var cstr = strings.ToLower(commitstr)
-
-		_, is_used2 := combbasesUncommit[cstr]
+		var str2 = str
+		var is_used2 bool
+		if len(str2) != 62 {
+			var commitstr = commitment(str)
+			str2 = bech32get(commitstr)
+			var cstr = strings.ToLower(commitstr)
+			_, is_used2 = combbasesUncommit[cstr]
+		} else {
+			str = ""
+		}
 
 		SetSrc(a.stealthimage, QRCODE(str))
 		SetSrc(a.stealthimage2, QRCODE("bitcoin:"+str2+"?amount=0.00000330"))
@@ -587,8 +632,11 @@ func (a *AppWallet) bindEvents(p *AppPay, s *AppMain) {
 		if n < 1 {
 			return
 		}
-
-		a.ViewStealth(str, uint64(n))
+		if len(str) == 64 {
+			a.ViewStealth(str, uint64(n), len(Value(a.stealthbase)) != 64)
+		} else {
+			a.ViewStealth(str2, uint64(n), len(Value(a.stealthbase)) != 64)
+		}
 	})
 	AddEventListener(a.genmain, "touchstart", "target", func(this, target JQuery) {
 		a.taptime = time.Now().UnixMilli()
@@ -625,6 +673,9 @@ func (a *AppWallet) bindEvents(p *AppPay, s *AppMain) {
 
 		HideX(a.genmainspin)
 		a.click = false
+
+		Undisplay(a.nochangevisible)
+		DisplayInline(a.hint)
 	})
 	AddEventListener(a.gentest, "touchstart", "target", func(this, target JQuery) {
 		a.taptime = time.Now().UnixMilli()
@@ -661,6 +712,9 @@ func (a *AppWallet) bindEvents(p *AppPay, s *AppMain) {
 
 		HideX(a.gentestspin)
 		a.click = false
+
+		Undisplay(a.nochangevisible)
+		DisplayInline(a.hint)
 	})
 	AddEventListener(a.usedcheck, "touchstart", "target", func(this, target JQuery) {
 		a.taptime = time.Now().UnixMilli()
@@ -738,7 +792,7 @@ func (a *AppWallet) bindEvents(p *AppPay, s *AppMain) {
 
 		go func() {
 
-			a.controller_used_stealth(Value(a.stealthbase), uint64(n-1))
+			a.controller_used_stealth(Value(a.stealthbase), uint64(n-1), len(Value(a.stealthbase)) != 64)
 
 			HideX(a.usedstealthcheckspin)
 			a.click = false
@@ -770,13 +824,53 @@ func (a *AppWallet) bindEvents(p *AppPay, s *AppMain) {
 		if n < 1 {
 			return
 		}
-		a.controller_stealth_sweep(Value(a.stealthbase), uint64(n-1))
+		var key = Value(a.stealthbase)
+		if key == "" {
+			key = Value(a.key)
+		}
+		a.controller_stealth_sweep(key, uint64(n-1))
 		SetValue(a.stealthspaginatorpage, fmt.Sprintf("%d", n))
 	})
 	AddEventListener(a.spend, "click", "target", func(this, target JQuery) {
 
 		var change = Value(a.keychange)
 		var source = Value(a.key)
+
+		if source == change {
+			change = ""
+		}
+
+		if len(change) == 0 {
+			// try to find different change address
+			var unspent string
+			for k := range keysbalances {
+				if k == source {
+					continue
+				}
+				if _, ok := possibleSpend[strings.ToLower(k)]; !ok {
+					if _, ok := tx[k]; !ok {
+						unspent = k
+						break
+					}
+				}
+			}
+			if len(unspent) == 0 {
+				// warn user
+				DisplayBlock(a.nochangevisible)
+				return
+			} else {
+				if !AddrsCompatible(unspent) {
+					return
+				}
+
+				SetValue(a.keychange, unspent)
+
+				Undisplay(a.spend)
+				Undisplay(a.change)
+
+				change = unspent
+			}
+		}
 
 		if !AddrsCompatible(change, source) {
 			return
@@ -798,6 +892,8 @@ func (a *AppWallet) bindEvents(p *AppPay, s *AppMain) {
 
 		Undisplay(s.wallet)
 		DisplayBlock(s.pay)
+
+		SetValue(a.keychange, "")
 	})
 	AddEventListener(a.change, "click", "target", func(this, target JQuery) {
 
@@ -814,7 +910,12 @@ func (a *AppWallet) bindEvents(p *AppPay, s *AppMain) {
 	})
 
 	AddEventListener(a.stealthpaginator, "click", "target", func(this, target JQuery) {
-		if Value(a.stealthbase) == "" {
+		var key = Value(a.stealthbase)
+		var isClaimingVisible = len(key) != 64
+		if key == "" {
+			key = Value(a.key)
+		}
+		if key == "" {
 			return
 		}
 
@@ -826,13 +927,18 @@ func (a *AppWallet) bindEvents(p *AppPay, s *AppMain) {
 		if n < 1 {
 			return
 		}
-		a.controller_stealth(Value(a.stealthbase), uint64(n-1))
+		a.controller_stealth(key, uint64(n-1), isClaimingVisible)
 		SetValue(a.stealthspaginatorpage, str)
 	})
 
 	// only when user presses enter, in the box, go to page number,...
 	AddEventListener(a.stealthspaginatorpage, "keyup", "key", func(this, target JQuery) {
-		if Value(a.stealthbase) == "" {
+		var key = Value(a.stealthbase)
+		var isClaimingVisible = len(key) != 64
+		if key == "" {
+			key = Value(a.key)
+		}
+		if key == "" {
 			return
 		}
 
@@ -847,11 +953,16 @@ func (a *AppWallet) bindEvents(p *AppPay, s *AppMain) {
 		if n < 1 {
 			return
 		}
-		a.controller_stealth(Value(a.stealthbase), uint64(n-1))
+		a.controller_stealth(key, uint64(n-1), isClaimingVisible)
 		SetValue(a.stealthspaginatorpage, str)
 	})
 	AddEventListener(a.stealthspaginatorgoto, "click", "target", func(this, target JQuery) {
-		if Value(a.stealthbase) == "" {
+		var key = Value(a.stealthbase)
+		var isClaimingVisible = len(key) != 64
+		if key == "" {
+			key = Value(a.key)
+		}
+		if key == "" {
 			return
 		}
 
@@ -863,7 +974,7 @@ func (a *AppWallet) bindEvents(p *AppPay, s *AppMain) {
 		if n < 1 {
 			return
 		}
-		a.controller_stealth(Value(a.stealthbase), uint64(n-1))
+		a.controller_stealth(key, uint64(n-1), isClaimingVisible)
 		SetValue(a.stealthspaginatorpage, str)
 	})
 
@@ -881,11 +992,15 @@ func (a *AppWallet) bindEvents(p *AppPay, s *AppMain) {
 		if n < 1 {
 			return
 		}
-		a.controller_stealth(Value(a.stealthbase), uint64(n-1))
+		a.controller_stealth(Value(a.stealthbase), uint64(n-1), len(Value(a.stealthbase)) != 64)
 		SetValue(a.stealthspaginatorpage, fmt.Sprintf("%d", n))
 	})
 	AddEventListener(a.stealthstealthsweep, "click", "target", func(this, target JQuery) {
-		if Value(a.stealthbase) == "" {
+		var key = Value(a.stealthbase)
+		if key == "" {
+			key = Value(a.key)
+		}
+		if key == "" {
 			return
 		}
 
@@ -900,7 +1015,7 @@ func (a *AppWallet) bindEvents(p *AppPay, s *AppMain) {
 		if n < 1 {
 			return
 		}
-		a.controller_stealth_sweep(Value(a.stealthbase), uint64(n-1))
+		a.controller_stealth_sweep(key, uint64(n-1))
 		SetValue(a.stealthspaginatorpage, fmt.Sprintf("%d", n))
 	})
 
@@ -914,7 +1029,7 @@ func (a *AppWallet) bindEvents(p *AppPay, s *AppMain) {
 		var name = Value(a.claimstealthname)
 		var addr = Value(a.stealthkey)
 
-		SetValue(a.claimstealthurl, DocumentOrigin() + "#" + addr + count + name)
+		SetValue(a.claimstealthurl, DocumentOrigin()+"#"+addr+count+name)
 	}
 
 	AddEventListener(a.claimstealthcount, "keydown", "target", func(this, target JQuery) {

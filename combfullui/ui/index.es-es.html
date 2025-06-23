@@ -115,14 +115,14 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 <div id="main" style="display:none">
 
 	<div class="w3-bar w3-magenta">
-	  <div class="w3-bar-item"><b>Billetera de pelo</b></div>
-	  <a href="#" id="mainbutton-home" class="w3-bar-item w3-button"><i class="fas fa-home"></i> Hogar</a>
+	  <div class="w3-bar-item"><b>Peine</b></div>
 	  <a href="#" id="mainbutton-wallet" class="w3-bar-item w3-button"><i class="fas fa-wallet"></i> Billetera</a>
 	  <a href="#" id="mainbutton-pay" class="w3-bar-item w3-button"><i class="fas fa-shopping-basket"></i> Pagar</a>
 	  <a href="#" id="mainbutton-imports" class="w3-bar-item w3-button"><i class="fas fa-folder-minus"></i> Exportar</a>
 	  <a href="#" id="mainbutton-coins" class="w3-bar-item w3-button"><i class="fas fa-coins"></i> Monedas</a>
 	  <a href="#" id="mainbutton-docs" class="w3-bar-item w3-button"><i class="fas fa-book"></i> Documentos</a>
 	  <a href="#" id="mainbutton-chart" class="w3-bar-item w3-button"><i class="fas fa-chart-line"></i> Cuadro</a>
+	  <a href="#" id="mainbutton-home" class="w3-bar-item w3-button"><i class="fas fa-wifi"></i> Red</a>
 	  <div class="dropdown w3-right">
 	    <button class="dropbtn">Inglés (EE. UU.)
 	      <i class="fa fa-caret-down"></i>
@@ -137,7 +137,7 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 	</div>
 <div id="body-home">
 	<div class="w3-row-padding">
-          <h1>Billetera de pelo</h1>
+          <h1>Red de peine</h1>
 	    <div class="w3-half">
 		<div class="w3-panel w3-red w3-display-container" id="home-outofsync">
   		  <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright">×</span>
@@ -305,14 +305,19 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 </div>
 <div id="body-wallet" style="display:none">
 	<div class="w3-row-padding">
+          <h1>Billetera de peine</h1>
 	    <div class="w3-half">
-		<h3>Llaves</h3>
-		
+		<h3>Llaves <span id="wallet-hint" style="display:none">Haga clic en una llave para encontrar fondos o para usarlo</span></h3>
+		<div class="w3-panel w3-red w3-display-container" id="wallet-nochange-visible" style="display:none">
+  		  <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright">×</span>
+		  <h2 style = "margin-right: 42px;"> Sin cambio de cambio advertencia </h2> 
+		  <p> Para pagar, genere una dirección más para ser utilizada como cambio. </p>
+		</div> 
 		  <table class="w3-table w3-striped w3-border w3-centered">
 		   <thead>
 		    <tr>
-		      <th></th>
 		      <th>Llave</th>
+		      <th>Dirección</th>
 		      <th>Balance</th>
 		    </tr>
 		   </thead>
@@ -379,20 +384,21 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 		<div id="wallet-key-clicked" style="display:none">
 			<h3><i class="fa-solid fa-key"></i> Llave</h3>
 
+
+			<label><i class="fa-solid fa-gem"></i> Bitcoin Llave Reclamando la dirección de quemaduras (Pague 330 SATS una vez para reclamar, se perderá cualquier BTC enviado)</label>
+			<input readonly="readonly" class="w3-input w3-border" type="text" id="wallet-key-claim" />
+			<label><i class="fa-solid fa-eye"></i> Dirección clave de peine (revela todas las direcciones de sigilo si se comparte)</label>
+			<input class="w3-input w3-border" type="text" id="wallet-key" />
+			<input class="w3-input w3-border" type="text" id="wallet-key-change" style="display:none" />
+			<input class="w3-input w3-border" type="text" id="wallet-stealth-base" style="display:none" />
 			<div class="w3-row-padding parent w3-card">
 				<div class="w3-half w3-panel"><img alt="barcode" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="  id="wallet-image2" />BTC</div>
 				<div class="w3-half w3-panel">Peine<img alt="barcode" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="  id="wallet-image" /></div>
 			</div>
-			<label>Bitcoin Llave Reclamando la dirección de quemaduras (Pague 330 SATS una vez para reclamar, se perderá cualquier BTC enviado)</label>
-			<input readonly="readonly" class="w3-input w3-border" type="text" id="wallet-key-claim" />
-			<label>Dirección de peine clave</label>
-			<input class="w3-input w3-border" type="text" id="wallet-key" />
-			<input class="w3-input w3-border" type="text" id="wallet-key-change" style="display:none" />
-			<input class="w3-input w3-border" type="text" id="wallet-stealth-base" style="display:none" />
 		    <div>
 			<button id="wallet-change" name="change" class="w3-btn w3-deep-orange w3-ripple">Establecer como cambio</button>
 			<button id="wallet-spend" name="spend" class="w3-btn w3-magenta w3-ripple">Pagar</button>
-		        <button id="wallet-sweep" name="sweep" class="w3-btn w3-teal w3-ripple">Barrer direcciones de sigilo</button>
+		        <button id="wallet-sweep" name="sweep" class="w3-btn w3-teal w3-ripple">Barrer</button>
 		        <button id="wallet-stealth-used-check" class="w3-btn w3-indigo w3-ripple">
 			  <span class="div sk-fading-circle" id="wallet-stealth-used-check-spinner">
 			    <span class="div sk-circle1 sk-circle"></span>
@@ -413,15 +419,15 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 		</div>
 		
 		<div id="wallet-stealth-clicked" style="display:none">
-			<h3><i class="fa-solid fa-shield"></i> Dirección sigilosa</h3>
+			<h3><i class="fa-solid fa-shield"></i> Dirección de sigilo/reclamación</h3>
 
 			<div class="w3-row-padding parent w3-card">
 				<div class="w3-half w3-panel"><img alt="barcode" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="  id="wallet-stealth-image2" />BTC</div>
 				<div class="w3-half w3-panel">Peine<img alt="barcode" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="  id="wallet-stealth-image" /></div>
 			</div>
-			<label>Bitcoin sigiloso reclamando la dirección de quemaduras (pague 330 sats una vez para reclamar, se perderá cualquier BTC enviado)</label>
+			<label><i class="fa-solid fa-gem"></i> Bitcoin reclamando la dirección de quemaduras (paga 330 sats una vez para reclamar, cualquier BTC enviado se perderá)</label>
 			<input readonly="readonly" class="w3-input w3-border" type="text" id="wallet-stealth-claim-addr" />
-			<label>Dirección de peine sigiloso</label>
+			<label><i class="fa-solid fa-shield"></i> Dirección de peine sigiloso</label>
 			<input readonly="readonly" class="w3-input w3-border" type="text" id="wallet-stealth-key" />
 			<label>Afirmar Wall Afirmar Count</label>
 			<input class="w3-input w3-border" type="number" id="wallet-stealth-claim-count" value="0" min="0" max="9" />
@@ -441,8 +447,20 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 		
 	    </div>
 	    <div class="w3-half" id="wallet-stealth-half" style="display:none">
-		<h3>Direcciones de sigilo</h3>
-
+		<div class="w3-panel w3-red w3-display-container" id="wallet-claiming-visible" style="display:none">
+  		  <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright">×</span>
+		  <h2 style="margin-right: 42px;">Reclamando la advertencia de direcciones</h2>
+		  <p>Nunca pague más de 330 SAT a la dirección de reclamación, perderá su bitcoin.</p>
+		</div> 
+		<h3>Direcciones de sigilo/reclamación</h3>
+		
+		<div>
+			<button style="display:none" id="wallet-stealth-16-btn" name="stealth" class="w3-btn w3-green w3-ripple"><i class="fa-solid fa-shield"></i> 16 direcciones sigilosas</button>
+			<button id="wallet-stealth-256-btn" name="stealth" class="w3-btn w3-green w3-ripple"><i class="fa-solid fa-shield"></i> 256 direcciones sigilosas</button>
+			<button style="display:none" id="wallet-claim-16-btn" name="stealth" class="w3-btn w3-green w3-ripple"><i class="fa-solid fa-gem"></i> 16 Direcciones de reclamación</button>
+			<button id="wallet-claim-256-btn" name="stealth" class="w3-btn w3-green w3-ripple"><i class="fa-solid fa-gem"></i> 256 Direcciones de reclamación</button>
+		</div>
+		<div id="wallet-stealths-claimings" style="display:none">
 		  <table class="w3-table w3-striped w3-border w3-centered">
 		   <thead>
 		    <tr>
@@ -468,12 +486,13 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 		  <input class="w3-bar-item" style="flex: 1;min-width:0" id="wallet-stealths-paginator-page" />
 		  <button class="w3-btn w3-bar-item w3-green" id="wallet-stealths-paginator-goto">»</button>
 		</div>
-
+		</div>
 	    </div>
 	</div>
 </div>
 <div id="body-pay" style="display:none">
 	<div class="w3-row-padding">
+          <h1>Pago de peine</h1>
 	    <div class="w3-half" id="pay-destinations">
 		<h3>Destinos de pago</h3>
 		  <table class="w3-table w3-striped w3-border w3-centered">
@@ -527,6 +546,7 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 </div>
 <div id="body-imports" style="display:none">
 	<div class="w3-row-padding">
+          <h1>Exportación/importación del peinador</h1>
 	    <div class="w3-half">
 
 		<h3>Exportar</h3>
@@ -658,6 +678,7 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 </div>
 <div id="body-coins" style="display:none">
 	<div class="w3-row-padding">
+          <h1>Monedas de peine</h1>
 	    <div class="w3-half">
 		<h3>Reclamos</h3>
 
@@ -739,13 +760,14 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 </div>
 <div id="body-docs" style="display:none">
 	<div class="w3-row-padding">
+          <h1>Documentación de peine</h1>
 		<h3>Documentación del protocolo del peine público</h3>
 
 		<a href="doc.html">Ver documentación de protocolo de peine público</a>
 
 		<h3>Página de información sobre la moneda de la criptograma resistente a la cantidad</h3>
 
-		<a href="https://wiki.haircomber.com">Cortacombo de moneda criptográfica resistente a la resistencia</a>
+		<a href="https://wiki.haircomb.info">Cortacombo de moneda criptográfica resistente a la resistencia</a>
 	</div>
 </div>
 
@@ -753,6 +775,7 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 <div id="body-chart" style="display:none">
 
 	<div class="w3-row-padding">
+	  <h1>Bids/gráfico de peinadores</h1>
 		<h3>Ofertas</h3>
 		<button id="chart-bids-reload-btn" class="w3-btn w3-blue">Recargar</button>
 		<button id="chart-bids-filter-btn" class="w3-btn w3-blue">Filtrar</button>

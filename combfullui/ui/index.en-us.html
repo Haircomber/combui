@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en-us">
+<html lang="en">
 <head id="head">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -65,7 +65,7 @@ text{
   }
 }
 </style>
-<link rel="canonical" href="/ui/index.en-us.html">
+<link rel="canonical" href="/ui/index.html">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="w3.css" integrity="sha384-ML3QbFQTmScwxgFDhoSxbHd48n3sQP2L+SFVoLfMDHez2p4KLvaOr6qs4QLHFZ1D" crossorigin="anonymous">
 <link rel="stylesheet" href="style.css" integrity="sha384-2AKQ6+MVMANuDTISlS21GkIXh8Ye6Q+qwJRBE34223xMrKJRYYB/jNw+zYXj47Ba" crossorigin="anonymous">
@@ -115,14 +115,14 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 <div id="main" style="display:none">
 
 	<div class="w3-bar w3-magenta">
-	  <div class="w3-bar-item"><b>Haircomb Wallet</b></div>
-	  <a href="#" id="mainbutton-home" class="w3-bar-item w3-button"><i class="fas fa-home"></i> Home</a>
+	  <div class="w3-bar-item"><b>Haircomb</b></div>
 	  <a href="#" id="mainbutton-wallet" class="w3-bar-item w3-button"><i class="fas fa-wallet"></i> Wallet</a>
 	  <a href="#" id="mainbutton-pay" class="w3-bar-item w3-button"><i class="fas fa-shopping-basket"></i> Pay</a>
 	  <a href="#" id="mainbutton-imports" class="w3-bar-item w3-button"><i class="fas fa-folder-minus"></i> Export</a>
 	  <a href="#" id="mainbutton-coins" class="w3-bar-item w3-button"><i class="fas fa-coins"></i> Coins</a>
 	  <a href="#" id="mainbutton-docs" class="w3-bar-item w3-button"><i class="fas fa-book"></i> Docs</a>
 	  <a href="#" id="mainbutton-chart" class="w3-bar-item w3-button"><i class="fas fa-chart-line"></i> Chart</a>
+	  <a href="#" id="mainbutton-home" class="w3-bar-item w3-button"><i class="fas fa-wifi"></i> Network</a>
 	  <div class="dropdown w3-right">
 	    <button class="dropbtn">English (US)
 	      <i class="fa fa-caret-down"></i>
@@ -137,7 +137,7 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 	</div>
 <div id="body-home">
 	<div class="w3-row-padding">
-          <h1>Haircomb Wallet</h1>
+          <h1>Haircomb Network</h1>
 	    <div class="w3-half">
 		<div class="w3-panel w3-red w3-display-container" id="home-outofsync">
   		  <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright">×</span>
@@ -305,14 +305,19 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 </div>
 <div id="body-wallet" style="display:none">
 	<div class="w3-row-padding">
+          <h1>Haircomb Wallet</h1>
 	    <div class="w3-half">
-		<h3>Keys</h3>
-		
+		<h3>Keys <span id="wallet-hint" style="display:none">Click a key to find funds or to use it</span></h3>
+		<div class="w3-panel w3-red w3-display-container" id="wallet-nochange-visible" style="display:none">
+  		  <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright">×</span>
+		  <h2 style="margin-right: 42px;">No Change Addresses Warning</h2>
+		  <p>To pay, generate one more address to be used as change.</p>
+		</div> 
 		  <table class="w3-table w3-striped w3-border w3-centered">
 		   <thead>
 		    <tr>
-		      <th></th>
 		      <th>Key</th>
+		      <th>Address</th>
 		      <th>Balance</th>
 		    </tr>
 		   </thead>
@@ -379,20 +384,21 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 		<div id="wallet-key-clicked" style="display:none">
 			<h3><i class="fa-solid fa-key"></i> Key</h3>
 
+
+			<label><i class="fa-solid fa-gem"></i> Bitcoin Claiming burn address (pay 330 sats once to claim, any btc sent will be lost)</label>
+			<input readonly="readonly" class="w3-input w3-border" type="text" id="wallet-key-claim" />
+			<label><i class="fa-solid fa-eye"></i> Key Comb address (reveals all stealth addresses claims if shared)</label>
+			<input class="w3-input w3-border" type="text" id="wallet-key" />
+			<input class="w3-input w3-border" type="text" id="wallet-key-change" style="display:none" />
+			<input class="w3-input w3-border" type="text" id="wallet-stealth-base" style="display:none" />
 			<div class="w3-row-padding parent w3-card">
 				<div class="w3-half w3-panel"><img alt="barcode" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="  id="wallet-image2" />BTC</div>
 				<div class="w3-half w3-panel">Comb<img alt="barcode" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="  id="wallet-image" /></div>
 			</div>
-			<label>Bitcoin Key Claiming burn address (pay 330 sats once to claim, any btc sent will be lost)</label>
-			<input readonly="readonly" class="w3-input w3-border" type="text" id="wallet-key-claim" />
-			<label>Key Comb address</label>
-			<input class="w3-input w3-border" type="text" id="wallet-key" />
-			<input class="w3-input w3-border" type="text" id="wallet-key-change" style="display:none" />
-			<input class="w3-input w3-border" type="text" id="wallet-stealth-base" style="display:none" />
 		    <div>
 			<button id="wallet-change" name="change" class="w3-btn w3-deep-orange w3-ripple">Set as Change</button>
 			<button id="wallet-spend" name="spend" class="w3-btn w3-magenta w3-ripple">Pay</button>
-		        <button id="wallet-sweep" name="sweep" class="w3-btn w3-teal w3-ripple">Sweep Stealth Addresses</button>
+		        <button id="wallet-sweep" name="sweep" class="w3-btn w3-teal w3-ripple">Sweep</button>
 		        <button id="wallet-stealth-used-check" class="w3-btn w3-indigo w3-ripple">
 			  <span class="div sk-fading-circle" id="wallet-stealth-used-check-spinner">
 			    <span class="div sk-circle1 sk-circle"></span>
@@ -413,15 +419,15 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 		</div>
 		
 		<div id="wallet-stealth-clicked" style="display:none">
-			<h3><i class="fa-solid fa-shield"></i> Stealth address</h3>
+			<h3><i class="fa-solid fa-shield"></i> Stealth/claiming address</h3>
 
 			<div class="w3-row-padding parent w3-card">
 				<div class="w3-half w3-panel"><img alt="barcode" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="  id="wallet-stealth-image2" />BTC</div>
 				<div class="w3-half w3-panel">Comb<img alt="barcode" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="  id="wallet-stealth-image" /></div>
 			</div>
-			<label>Bitcoin Stealth Claiming burn address (pay 330 sats once to claim, any btc sent will be lost)</label>
+			<label><i class="fa-solid fa-gem"></i> Bitcoin Claiming burn address (pay 330 sats once to claim, any btc sent will be lost)</label>
 			<input readonly="readonly" class="w3-input w3-border" type="text" id="wallet-stealth-claim-addr" />
-			<label>Stealth Comb address</label>
+			<label><i class="fa-solid fa-shield"></i> Stealth Comb address</label>
 			<input readonly="readonly" class="w3-input w3-border" type="text" id="wallet-stealth-key" />
 			<label>Claim Wall Claim Count</label>
 			<input class="w3-input w3-border" type="number" id="wallet-stealth-claim-count" value="0" min="0" max="9" />
@@ -441,8 +447,20 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 		
 	    </div>
 	    <div class="w3-half" id="wallet-stealth-half" style="display:none">
-		<h3>Stealth addresses</h3>
-
+		<div class="w3-panel w3-red w3-display-container" id="wallet-claiming-visible" style="display:none">
+  		  <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright">×</span>
+		  <h2 style="margin-right: 42px;">Claiming Addresses Warning</h2>
+		  <p>Never pay more than 330 sats to claiming address, you will lose your bitcoin.</p>
+		</div> 
+		<h3>Stealth/claiming addresses</h3>
+		
+		<div>
+			<button style="display:none" id="wallet-stealth-16-btn" name="stealth" class="w3-btn w3-green w3-ripple"><i class="fa-solid fa-shield"></i> 16 Stealth addresses</button>
+			<button id="wallet-stealth-256-btn" name="stealth" class="w3-btn w3-green w3-ripple"><i class="fa-solid fa-shield"></i> 256 Stealth addresses</button>
+			<button style="display:none" id="wallet-claim-16-btn" name="stealth" class="w3-btn w3-green w3-ripple"><i class="fa-solid fa-gem"></i> 16 Claiming addresses</button>
+			<button id="wallet-claim-256-btn" name="stealth" class="w3-btn w3-green w3-ripple"><i class="fa-solid fa-gem"></i> 256 Claiming addresses</button>
+		</div>
+		<div id="wallet-stealths-claimings" style="display:none">
 		  <table class="w3-table w3-striped w3-border w3-centered">
 		   <thead>
 		    <tr>
@@ -468,12 +486,13 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 		  <input class="w3-bar-item" style="flex: 1;min-width:0" id="wallet-stealths-paginator-page" />
 		  <button class="w3-btn w3-bar-item w3-green" id="wallet-stealths-paginator-goto">»</button>
 		</div>
-
+		</div>
 	    </div>
 	</div>
 </div>
 <div id="body-pay" style="display:none">
 	<div class="w3-row-padding">
+          <h1>Haircomb Payment</h1>
 	    <div class="w3-half" id="pay-destinations">
 		<h3>Payment destinations</h3>
 		  <table class="w3-table w3-striped w3-border w3-centered">
@@ -527,6 +546,7 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 </div>
 <div id="body-imports" style="display:none">
 	<div class="w3-row-padding">
+          <h1>Haircomb Export/Import</h1>
 	    <div class="w3-half">
 
 		<h3>Export</h3>
@@ -658,6 +678,7 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 </div>
 <div id="body-coins" style="display:none">
 	<div class="w3-row-padding">
+          <h1>Haircomb Coins</h1>
 	    <div class="w3-half">
 		<h3>Claims</h3>
 
@@ -739,13 +760,14 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 </div>
 <div id="body-docs" style="display:none">
 	<div class="w3-row-padding">
+          <h1>Haircomb Documentation</h1>
 		<h3>Public comb protocol documentation</h3>
 
 		<a href="doc.html">View Public comb protocol documentation</a>
 
 		<h3>Quantum Resistant Crypto Currency Information Page</h3>
 
-		<a href="https://wiki.haircomber.com">Quantum Resistant Crypto Currency Haircomb</a>
+		<a href="https://wiki.haircomb.info">Quantum Resistant Crypto Currency Haircomb</a>
 	</div>
 </div>
 
@@ -753,6 +775,7 @@ fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="squar
 <div id="body-chart" style="display:none">
 
 	<div class="w3-row-padding">
+	  <h1>Haircomb Bids/Chart</h1>
 		<h3>Bids</h3>
 		<button id="chart-bids-reload-btn" class="w3-btn w3-blue">Reload</button>
 		<button id="chart-bids-filter-btn" class="w3-btn w3-blue">Filter</button>

@@ -1,0 +1,859 @@
+<!doctype html>
+<html lang="en">
+<head id="head">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Haircomb Wallet - Haircomb Crypto Currency free and open-source wallet</title>
+<meta name="description" content="Haircomb wallet is a free, open-source crypto tool for generating Haircomb wallets and more. Pay on the Haircomb liquidity graph, or see the latest claims made by all users.">
+<style>
+
+svg{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+svg circle{
+  stroke: #e80083;
+}
+
+.circle{
+  transform-origin: center ;
+}
+#arc1{
+  stroke-dasharray: 30;
+  stroke-dashoffset: 18;
+  animation: 10s -2s rota infinite linear;
+}
+#arc3{
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: 16s 1s rota infinite linear;
+}
+#arc4{
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: 6s 1s rota infinite linear reverse;
+}
+#arc5{
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: 4s 1s rota infinite linear;
+}
+#arc6{
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: 8s 1s rota infinite linear alternate;
+}
+#arc7{
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: 4s 1s rota infinite linear reverse;
+}
+text{
+ fill: #ffffff;
+ font: bold 24px sans-serif;
+}
+@keyframes rota{
+  from{
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+  }
+}
+</style>
+<link rel="canonical" href="/ui/index.html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="w3.css" integrity="sha384-ML3QbFQTmScwxgFDhoSxbHd48n3sQP2L+SFVoLfMDHez2p4KLvaOr6qs4QLHFZ1D" crossorigin="anonymous">
+<link rel="stylesheet" href="style.css" integrity="sha384-2AKQ6+MVMANuDTISlS21GkIXh8Ye6Q+qwJRBE34223xMrKJRYYB/jNw+zYXj47Ba" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.0/css/all.css" integrity="sha384-/o6I2CkkWC//PSjvWC/eYN7l3xM3tJm8ZzVkCOfp//W05QcE3mlGskpoHB6XqI+B" crossorigin="anonymous">
+</head>
+<body>
+
+<textarea style="display:none;visibility:hidden;" id="home-main-load"></textarea>
+
+<div id="loading" style="display:none">
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300">
+  <circle id="arc1" class="circle" cx="150" cy="150" r="120" opacity=".89" fill="none" stroke="#632b26" stroke-width="12" stroke-linecap="square" stroke-opacity=".99213" />
+  <circle id="arc2" class="circle" cx="150" cy="150" r="120" opacity=".49" fill="none" stroke="#632b26" stroke-width="8" stroke-linecap="square" stroke-opacity=".99213" />
+  <circle id="arc3" class="circle" cx="150" cy="150" r="100" opacity=".49" fill="none" stroke="#632b26" stroke-width="20" stroke-linecap="square" stroke-opacity=".99213" />
+  <circle id="arc4" class="circle" cx="150" cy="150" r="120" opacity=".49" fill="none" stroke="#632b26" stroke-width="30" stroke-linecap="square" stroke-opacity=".99213" />
+  <circle id="arc5" class="circle" cx="150" cy="150" r="100" opacity=".89" fill="none" stroke="#632b26" stroke-width="8" stroke-linecap="square" stroke-opacity=".99213" />
+  <circle id="arc6" class="circle" cx="150" cy="150" r="90" opacity=".49" fill="none" stroke="#632b26" stroke-width="16" stroke-linecap="square" stroke-opacity=".99213" />
+  <circle id="arc7" class="circle" cx="150" cy="150" r="90" opacity=".89" fill="none" stroke="#632b26" stroke-width="8" stroke-linecap="square" stroke-opacity=".99213" />
+  <circle id="arc8" class="circle" cx="150" cy="150" r="80" opacity=".79" fill="#e80083"
+fill-opacity="0"         stroke="#632b26" stroke-width="8" stroke-linecap="square" stroke-opacity=".99213" />
+  <line x1="126" y1="185" x2="145" y2="90" stroke="#e80083" stroke-width="3" stroke-linecap="square" />
+  <line x1="126" y1="185" x2="122" y2="204" stroke="#e80083" stroke-width="3"  />
+  <line x1="145" y1="90" x2="173" y2="95" stroke="#e80083" stroke-width="3"  />
+  <line x1="144" y1="95" x2="172" y2="100" stroke="#e80083" stroke-width="3"  />
+  <line x1="143" y1="100" x2="171" y2="105" stroke="#e80083" stroke-width="3"  />
+  <line x1="142" y1="105" x2="170" y2="110" stroke="#e80083" stroke-width="3"  />
+  <line x1="141" y1="110" x2="169" y2="115" stroke="#e80083" stroke-width="3"  />
+  <line x1="140" y1="115" x2="168" y2="120" stroke="#e80083" stroke-width="3"  />
+  <line x1="139" y1="120" x2="167" y2="125" stroke="#e80083" stroke-width="3"  />
+  <line x1="138" y1="125" x2="166" y2="130" stroke="#e80083" stroke-width="3"  />
+  <line x1="137" y1="130" x2="165" y2="135" stroke="#e80083" stroke-width="3"  />
+  <line x1="136" y1="135" x2="164" y2="140" stroke="#e80083" stroke-width="3"  />
+  <line x1="135" y1="140" x2="163" y2="145" stroke="#e80083" stroke-width="3"  />
+  <line x1="134" y1="145" x2="162" y2="150" stroke="#e80083" stroke-width="3"  />
+  <line x1="133" y1="150" x2="161" y2="155" stroke="#e80083" stroke-width="3"  />
+  <line x1="132" y1="155" x2="160" y2="160" stroke="#e80083" stroke-width="3"  />
+  <line x1="131" y1="160" x2="159" y2="165" stroke="#e80083" stroke-width="3"  />
+  <line x1="130" y1="165" x2="158" y2="170" stroke="#e80083" stroke-width="3"  />
+  <line x1="129" y1="170" x2="157" y2="175" stroke="#e80083" stroke-width="3"  />
+  <line x1="128" y1="175" x2="156" y2="180" stroke="#e80083" stroke-width="3"  />
+  <line x1="127" y1="180" x2="155" y2="185" stroke="#e80083" stroke-width="3"  />
+  <line x1="126" y1="185" x2="154" y2="190" stroke="#e80083" stroke-width="3"  />
+  <line x1="125" y1="190" x2="153" y2="195" stroke="#e80083" stroke-width="3"  />
+</svg>
+</div>
+
+<div id="main">
+
+	<div class="w3-bar w3-magenta">
+	  <div class="w3-bar-item"><b>Haircomb</b></div>
+	  <a href="#" id="mainbutton-wallet" class="w3-bar-item w3-button"><i class="fas fa-wallet"></i> Wallet</a>
+	  <a href="#" id="mainbutton-pay" class="w3-bar-item w3-button"><i class="fas fa-shopping-basket"></i> Pay</a>
+	  <a href="#" id="mainbutton-imports" class="w3-bar-item w3-button"><i class="fas fa-folder-minus"></i> Export</a>
+	  <a href="#" id="mainbutton-coins" class="w3-bar-item w3-button"><i class="fas fa-coins"></i> Coins</a>
+	  <a href="#" id="mainbutton-docs" class="w3-bar-item w3-button"><i class="fas fa-book"></i> Docs</a>
+	  <a href="#" id="mainbutton-chart" class="w3-bar-item w3-button"><i class="fas fa-chart-line"></i> Chart</a>
+	  <a href="#" id="mainbutton-home" class="w3-bar-item w3-button"><i class="fas fa-wifi"></i> Network</a>
+	  <div class="dropdown w3-right">
+	    <button class="dropbtn">Basic
+	      <i class="fa fa-caret-down"></i>
+	    </button>
+	    <div class="dropdown-content" style="right:0">
+	      <a href="index.html">Advanced</a>
+	    </div>
+	  </div>
+
+	</div>
+<div id="body-home">
+	<div class="w3-row-padding">
+          <h1>Haircomb Network</h1>
+	    <div class="w3-half">
+		<div class="w3-panel w3-red w3-display-container" id="home-outofsync">
+  		  <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright">×</span>
+		  <h2 style="margin-right: 42px;">Wallet appears to be out of sync</h2>
+		  <p>Displayed balances are incorrect until wallet is fully synced.</p>
+		</div> 
+            </div>
+            <div class="w3-half w3-panel">
+                <div class="w3-light-grey">
+		  <div class="w3-container w3-green w3-padding w3-center" id="home-progress" style="width:0%">0%</div>
+		</div>
+		<div class="w3-margin-top">
+		
+		  <input id="home-backend" class="w3-input w3-light-blue w3-padding-large" style="width:40%;display: inline-block;" />
+		  
+		  <button id="home-refresh" class="w3-btn w3-blue w3-padding-large w3-ripple">Use and Refresh</button>
+		  
+		  <div class="w3-dropdown-hover">
+		    <button id="home-refresh-freq" class="w3-btn w3-gray w3-padding-large w3-ripple"><span title="1">Once</span>
+		    	<i class="fa fa-caret-down"></i></button>
+		    <div class="w3-dropdown-content w3-bar-block w3-border">
+		      <a href="#" onclick="this.parentElement.parentElement.children[0].innerHTML=this.innerHTML" class="w3-bar-item w3-button"><span title="1">Once</span>
+		      	<i class="fa fa-caret-down"></i></a>
+		      <a href="#" onclick="this.parentElement.parentElement.children[0].innerHTML=this.innerHTML" class="w3-bar-item w3-button"><span title="10">Every 10 sec</span>
+		      	<i class="fa fa-caret-down"></i></a>
+		      <a href="#" onclick="this.parentElement.parentElement.children[0].innerHTML=this.innerHTML" class="w3-bar-item w3-button"><span title="60">Every 60 sec</span>
+		      	<i class="fa fa-caret-down"></i></a>
+		    </div>
+		  </div>
+		</div>
+            </div>
+	</div>
+	
+	
+	<div class="w3-row-padding">
+	    <div class="w3-half w3-panel">
+		<div class="w3-cell">
+		<header class="w3-container w3-magenta">
+		  <h3><i class="fas fa-dice-d6"></i> <b>Block:</b> <span class="long" id="home-blockhash"></span></h3>
+		</header>
+		<div class="w3-container">
+		<p>
+		  Block hash of the underlying chain.
+		</p>
+		</div>
+		</div>
+            </div>
+	    <div class="w3-quarter w3-panel">
+		<div class="w3-cell">
+		<header class="w3-container w3-magenta">
+		  <h3><i class="fas fa-dice-d6"></i> <b>Height:</b> <span id="home-blockheight">0</span></h3>
+		</header>
+		<div class="w3-container">
+		<p>
+		  Number of the top block in the underlying block chain.
+		</p>
+		</div>
+		</div>
+            </div>
+            <div class="w3-quarter w3-panel">
+		<div class="w3-cell">
+			<button id="home-shutdown" type="submit" class="w3-btn w3-black w3-ripple">
+			<strong>
+			  <span class="div sk-fading-circle" id="home-shutdown-spinner">
+			    <span class="div sk-circle1 sk-circle"></span>
+			    <span class="div sk-circle2 sk-circle"></span>
+			    <span class="div sk-circle3 sk-circle"></span>
+			    <span class="div sk-circle4 sk-circle"></span>
+			    <span class="div sk-circle5 sk-circle"></span>
+			    <span class="div sk-circle6 sk-circle"></span>
+			    <span class="div sk-circle7 sk-circle"></span>
+			    <span class="div sk-circle8 sk-circle"></span>
+			    <span class="div sk-circle9 sk-circle"></span>
+			    <span class="div sk-circle10 sk-circle"></span>
+			    <span class="div sk-circle11 sk-circle"></span>
+			    <span class="div sk-circle12 sk-circle"></span>
+			  </span>
+			<i class="fas fa-power-off"></i> Shutdown</strong></button>
+            	</div>
+            </div>
+	</div>
+	
+	
+	<div class="w3-row-padding">
+	    <div class="w3-half w3-panel">
+		<div class="w3-cell">
+		<header class="w3-container w3-magenta">
+		  <h3><i class="fas fa-bolt"></i> <b>Accelerator:</b> <span class="long" id="home-accelerator"></span></h3>
+		</header>
+		<div class="w3-container">
+		<p>
+		  Accelerator is used to sync faster to a specific block consensus.
+		</p>
+		</div>
+		</div>
+            </div>
+	    <div class="w3-quarter w3-panel">
+		<div class="w3-cell">
+		<header class="w3-container w3-magenta">
+		  <h3><i class="fas fa-coins"></i> <b>Existing:</b> <span id="home-existing">0.00000000 COMB</span></h3>
+		</header>
+		<div class="w3-container">
+		<p>
+		  How many tokens are in existence.
+		</p>
+		</div>
+		</div>
+            </div>
+	    <div class="w3-quarter w3-panel">
+		<div class="w3-cell">
+		<header class="w3-container w3-magenta">
+		  <h3><i class="fas fa-coins"></i> <b>Remaining:</b> <span id="home-remaining">0.00000000 COMB</span></h3>
+		</header>
+		<div class="w3-container">
+		<p>
+		  How many tokens are remaining to be claimed.
+		</p>
+		</div>
+		</div>
+            </div>
+	</div>
+
+	
+	
+	<div class="w3-row-padding">
+	    <div class="w3-half w3-panel">
+		<div class="w3-cell">
+		<header class="w3-container w3-magenta">
+		  <h3><i class="fas fa-fingerprint"></i> <b>Fingerprint:</b> <span class="long" id="home-fingerprint"></span></h3>
+		</header>
+		<div class="w3-container">
+		<p>
+		  Fingerprint is the AES checksum of all the commitments in the commitment set.
+		</p>
+		</div>
+		</div>
+            </div>
+	    <div class="w3-quarter w3-panel">
+		<div class="w3-cell">
+		<header class="w3-container w3-magenta">
+		  <h3><i class="fas fa-ring"></i> <b>Commitments:</b> <span id="home-commitments">0</span></h3>
+		</header>
+		<div class="w3-container">
+		<p>
+		  Number of commitments in the commitment set.
+		</p>
+		</div>
+		</div>
+            </div>
+	    <div class="w3-quarter w3-panel">
+		<div class="w3-cell">
+		<header class="w3-container w3-magenta">
+		  <h3><i class="fas fa-ring"></i> <b>P2WSH:</b> <span id="home-p2wsh"></span></h3>
+		</header>
+		<div class="w3-container">
+		<p>
+		  Number of Pay-To-Witness-Script-Hash outputs on chain.
+		</p>
+		</div>
+		</div>
+            </div>
+	</div>
+	
+	
+</div>
+<div id="body-wallet" style="display:none">
+	<div class="w3-row-padding">
+          <h1>Haircomb Wallet</h1>
+	    <div class="w3-half">
+		<h3>Keys <span id="wallet-hint" style="display:none">Click a key to find funds or to use it</span></h3>
+		<div class="w3-panel w3-red w3-display-container" id="wallet-nochange-visible" style="display:none">
+  		  <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright">×</span>
+		  <h2 style="margin-right: 42px;">No Change Addresses Warning</h2>
+		  <p>To pay, generate one more address to be used as change.</p>
+		</div> 
+		  <table class="w3-table w3-striped w3-border w3-centered">
+		   <thead>
+		    <tr>
+		      <th>Key</th>
+		      <th>Address</th>
+		      <th>Balance</th>
+		    </tr>
+		   </thead>
+		   <tbody id="wallet-keys"></tbody>
+		  </table>
+		<form id="wallet-form" action="javascript:void(0)">
+			<label class="w3-text-gray">Key Count</label>
+			<input name="username" class="w3-input w3-border" type="text" id="wallet-keycount" value="1" />
+			<label class="w3-text-gray">Brain password (optional)</label>
+			<input name="password" class="w3-input w3-border" type="password" id="wallet-password" />
+
+		   <div>
+			<button id="wallet-gen-test" type="submit" class="w3-btn w3-blue w3-ripple">
+			  <span class="div sk-fading-circle" id="wallet-gen-test-spinner">
+			    <span class="div sk-circle1 sk-circle"></span>
+			    <span class="div sk-circle2 sk-circle"></span>
+			    <span class="div sk-circle3 sk-circle"></span>
+			    <span class="div sk-circle4 sk-circle"></span>
+			    <span class="div sk-circle5 sk-circle"></span>
+			    <span class="div sk-circle6 sk-circle"></span>
+			    <span class="div sk-circle7 sk-circle"></span>
+			    <span class="div sk-circle8 sk-circle"></span>
+			    <span class="div sk-circle9 sk-circle"></span>
+			    <span class="div sk-circle10 sk-circle"></span>
+			    <span class="div sk-circle11 sk-circle"></span>
+			    <span class="div sk-circle12 sk-circle"></span>
+			  </span>
+			Testnet key generate</button>
+			<button id="wallet-gen-main" type="submit" class="w3-btn w3-magenta w3-ripple">
+			  <span class="div sk-fading-circle" id="wallet-gen-main-spinner">
+			    <span class="div sk-circle1 sk-circle"></span>
+			    <span class="div sk-circle2 sk-circle"></span>
+			    <span class="div sk-circle3 sk-circle"></span>
+			    <span class="div sk-circle4 sk-circle"></span>
+			    <span class="div sk-circle5 sk-circle"></span>
+			    <span class="div sk-circle6 sk-circle"></span>
+			    <span class="div sk-circle7 sk-circle"></span>
+			    <span class="div sk-circle8 sk-circle"></span>
+			    <span class="div sk-circle9 sk-circle"></span>
+			    <span class="div sk-circle10 sk-circle"></span>
+			    <span class="div sk-circle11 sk-circle"></span>
+			    <span class="div sk-circle12 sk-circle"></span>
+			  </span>
+			Mainnet key generate</button>
+			<button id="wallet-used-check" class="w3-btn w3-indigo w3-ripple">
+			  <span class="div sk-fading-circle" id="wallet-used-check-spinner">
+			    <span class="div sk-circle1 sk-circle"></span>
+			    <span class="div sk-circle2 sk-circle"></span>
+			    <span class="div sk-circle3 sk-circle"></span>
+			    <span class="div sk-circle4 sk-circle"></span>
+			    <span class="div sk-circle5 sk-circle"></span>
+			    <span class="div sk-circle6 sk-circle"></span>
+			    <span class="div sk-circle7 sk-circle"></span>
+			    <span class="div sk-circle8 sk-circle"></span>
+			    <span class="div sk-circle9 sk-circle"></span>
+			    <span class="div sk-circle10 sk-circle"></span>
+			    <span class="div sk-circle11 sk-circle"></span>
+			    <span class="div sk-circle12 sk-circle"></span>
+			  </span>
+			Used key check</button>
+		   </div>
+		</form>
+				
+		<div id="wallet-key-clicked" style="display:none">
+			<h3><i class="fa-solid fa-key"></i> Key</h3>
+
+
+			<label><i class="fa-solid fa-gem"></i> Bitcoin Claiming burn address (pay 330 sats once to claim, any btc sent will be lost)</label>
+			<input readonly="readonly" class="w3-input w3-border" type="text" id="wallet-key-claim" />
+			<label><i class="fa-solid fa-eye"></i> Key Comb address (reveals all stealth addresses claims if shared)</label>
+			<input class="w3-input w3-border" type="text" id="wallet-key" />
+			<input class="w3-input w3-border" type="text" id="wallet-key-change" style="display:none" />
+			<input class="w3-input w3-border" type="text" id="wallet-stealth-base" style="display:none" />
+			<div class="w3-row-padding parent w3-card">
+				<div class="w3-half w3-panel"><img alt="barcode" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="  id="wallet-image2" />BTC</div>
+				<div class="w3-half w3-panel">Comb<img alt="barcode" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="  id="wallet-image" /></div>
+			</div>
+		    <div>
+			<button id="wallet-change" name="change" class="w3-btn w3-deep-orange w3-ripple">Set as Change</button>
+			<button id="wallet-spend" name="spend" class="w3-btn w3-magenta w3-ripple">Pay</button>
+		        <button id="wallet-sweep" name="sweep" class="w3-btn w3-teal w3-ripple">Sweep</button>
+		        <button id="wallet-stealth-used-check" class="w3-btn w3-indigo w3-ripple">
+			  <span class="div sk-fading-circle" id="wallet-stealth-used-check-spinner">
+			    <span class="div sk-circle1 sk-circle"></span>
+			    <span class="div sk-circle2 sk-circle"></span>
+			    <span class="div sk-circle3 sk-circle"></span>
+			    <span class="div sk-circle4 sk-circle"></span>
+			    <span class="div sk-circle5 sk-circle"></span>
+			    <span class="div sk-circle6 sk-circle"></span>
+			    <span class="div sk-circle7 sk-circle"></span>
+			    <span class="div sk-circle8 sk-circle"></span>
+			    <span class="div sk-circle9 sk-circle"></span>
+			    <span class="div sk-circle10 sk-circle"></span>
+			    <span class="div sk-circle11 sk-circle"></span>
+			    <span class="div sk-circle12 sk-circle"></span>
+			  </span>
+			Claimed stack check</button>
+		    </div>
+		</div>
+		
+		<div id="wallet-stealth-clicked" style="display:none">
+			<h3><i class="fa-solid fa-shield"></i> Stealth/claiming address</h3>
+
+			<div class="w3-row-padding parent w3-card">
+				<div class="w3-half w3-panel"><img alt="barcode" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="  id="wallet-stealth-image2" />BTC</div>
+				<div class="w3-half w3-panel">Comb<img alt="barcode" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="  id="wallet-stealth-image" /></div>
+			</div>
+			<label><i class="fa-solid fa-gem"></i> Bitcoin Claiming burn address (pay 330 sats once to claim, any btc sent will be lost)</label>
+			<input readonly="readonly" class="w3-input w3-border" type="text" id="wallet-stealth-claim-addr" />
+			<label><i class="fa-solid fa-shield"></i> Stealth Comb address</label>
+			<input readonly="readonly" class="w3-input w3-border" type="text" id="wallet-stealth-key" />
+			<label>Claim Wall Claim Count</label>
+			<input class="w3-input w3-border" type="number" id="wallet-stealth-claim-count" value="0" min="0" max="9" />
+			<label>Claim Wall User Name</label>
+			<input class="w3-input w3-border" type="text" id="wallet-stealth-claim-name" />
+			<label>Claim Wall Url</label>
+			<div class="w3-cell-row"><div class="w3-container w3-cell" style="width:100%;padding: 0px">
+			<input readonly="readonly" class="w3-input w3-border" type="text" id="wallet-stealth-claim-url" />
+			</div><div class="w3-container w3-cell" style="padding: 0px">
+			<button id="wallet-stealth-claim-copy" name="copyurl" class="w3-btn w3-blue w3-ripple">Copy</button>
+			</div></div>
+		    <div>
+			<button id="wallet-stealth-stealth" name="stealth" class="w3-btn w3-green w3-ripple">Stealth Addresses of Stealth Address</button>
+		        <button id="wallet-stealth-sweep" name="sweep" class="w3-btn w3-teal w3-ripple">Sweep Stealth Addresses of Stealth Address</button>
+		    </div>
+		</div>
+		
+	    </div>
+	    <div class="w3-half" id="wallet-stealth-half" style="display:none">
+		<div class="w3-panel w3-red w3-display-container" id="wallet-claiming-visible" style="display:none">
+  		  <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright">×</span>
+		  <h2 style="margin-right: 42px;">Claiming Addresses Warning</h2>
+		  <p>Never pay more than 330 sats to claiming address, you will lose your bitcoin.</p>
+		</div> 
+		<h3>Stealth/claiming addresses</h3>
+		
+		<div>
+			<button style="display:none" id="wallet-stealth-16-btn" name="stealth" class="w3-btn w3-green w3-ripple"><i class="fa-solid fa-shield"></i> 16 Stealth addresses</button>
+			<button id="wallet-stealth-256-btn" name="stealth" class="w3-btn w3-green w3-ripple"><i class="fa-solid fa-shield"></i> 256 Stealth addresses</button>
+			<button style="display:none" id="wallet-claim-16-btn" name="stealth" class="w3-btn w3-green w3-ripple"><i class="fa-solid fa-gem"></i> 16 Claiming addresses</button>
+			<button id="wallet-claim-256-btn" name="stealth" class="w3-btn w3-green w3-ripple"><i class="fa-solid fa-gem"></i> 256 Claiming addresses</button>
+		</div>
+		<div id="wallet-stealths-claimings" style="display:none">
+		  <table class="w3-table w3-striped w3-border w3-centered">
+		   <thead>
+		    <tr>
+		      <th></th>
+		      <th>Address</th>
+		      <th>Balance</th>
+		    </tr>
+		   </thead>
+		   <tbody id="wallet-stealths"></tbody>
+		  </table>
+		  
+
+		<div class="w3-bar w3-border w3-round w3-threequarter" id="wallet-stealths-paginator">
+		  <a class="w3-bar-item w3-button w3-green" href="#">1</a>
+		  <a class="w3-bar-item w3-button" href="#">2</a>
+		  <a class="w3-bar-item w3-button" href="#">3</a>
+		  <a class="w3-bar-item w3-button" href="#">4</a>
+		  <a class="w3-bar-item w3-button" href="#">5</a>
+		  <a class="w3-bar-item w3-button w3-right" href="#">»</a>
+		</div>
+
+		<div class="w3-bar w3-border w3-round w3-quarter w3-right" style="display:flex">
+		  <input class="w3-bar-item" style="flex: 1;min-width:0" id="wallet-stealths-paginator-page" />
+		  <button class="w3-btn w3-bar-item w3-green" id="wallet-stealths-paginator-goto">»</button>
+		</div>
+		</div>
+	    </div>
+	</div>
+</div>
+<div id="body-pay" style="display:none">
+	<div class="w3-row-padding">
+          <h1>Haircomb Payment</h1>
+	    <div class="w3-half" id="pay-destinations">
+		<h3>Payment destinations</h3>
+		  <table class="w3-table w3-striped w3-border w3-centered">
+		   <thead>
+		    <tr>
+		      <th>Address</th>
+		      <th>Amount</th>
+		    </tr>
+		   </thead>
+		   <tbody id="pay-dest-body"></tbody>
+		  </table>
+	    </div>
+	    <div class="w3-half">
+		<h3>Payment info</h3>
+		    <div>
+			<label>Source key</label>
+			<input readonly="readonly" class="w3-input w3-border" type="text" id="pay-key-source" />
+
+			<label>Change key</label>
+			<input readonly="readonly" class="w3-input w3-border" type="text" id="pay-key-change" />
+			
+			<label>Stack top</label>
+			<input readonly="readonly" class="w3-input w3-border" type="text" id="pay-stack-top" />
+		    </div>
+		    <form id="pay-form" action="javascript:void(0)">
+			<label class="w3-text-gray">Key Count</label>
+			<input name="username" class="w3-input w3-border" type="text" id="pay-keycount" value="1" />
+			<label class="w3-text-gray">Brain password (optional)</label>
+			<input name="password" class="w3-input w3-border" type="password" id="pay-password" />
+		   </form>
+		   <div>
+			<button id="pay-use" type="submit" class="w3-btn w3-magenta w3-ripple">Pay</button>
+		   </div>
+
+		
+		
+		<h3>Add destination</h3>
+		    <div>
+			<label>Destination address</label>
+			<input class="w3-input w3-border" type="text" id="pay-destination-addr" />
+			
+			<label>Amount (nats)</label>
+			<input class="w3-input w3-border" type="number" id="pay-destination-amount" />
+		    </div>
+		    <div>
+			<button id="pay-destination-add" name="stealth" class="w3-btn w3-green w3-ripple">Add</button>
+			<button id="pay-destination-pop" name="stealth" class="w3-btn w3-red w3-ripple">Pop</button>
+		    </div>
+	    </div>
+	</div>
+</div>
+<div id="body-imports" style="display:none">
+	<div class="w3-row-padding">
+          <h1>Haircomb Export/Import</h1>
+	    <div class="w3-half">
+
+		<h3>Export</h3>
+		
+		<div class="w3-container">
+
+		  <label class="w3-text-gray">File name</label>
+		  <input class="w3-input w3-border w3-light-grey" style="width:80%" type="text" placeholder="Enter file name..." id="export-data" />
+  		</div>
+ 		<div class="w3-container">
+		  <button id="export-submit" class="w3-btn w3-green w3-padding-large w3-ripple" style="float: left">Export</button>
+		</div>
+
+		<h3>Export for Recipient</h3>
+		
+		<div class="w3-container">
+
+		  <label class="w3-text-gray">Recipient address</label>
+		  <input class="w3-input w3-border w3-light-grey" style="width:80%" type="text" placeholder="Enter Recipient address..." id="export2-data" />
+  		</div>
+ 		<div class="w3-container">
+		  <button id="export2-submit" class="w3-btn w3-green w3-padding-large w3-ripple" style="float: left">Export</button>
+		</div>
+
+	    </div>
+	    <div class="w3-half">
+		<h3>Deciders Hardfork</h3>
+
+		<div class="w3-container" id="export-deciders-hardfork-hider">
+		<input id="export-deciders-hardfork" class="w3-check" type="checkbox">
+		<label class="w3-text-gray">Deciders Hardfork</label>
+		</div>
+
+		<p id="export-deciders-hardfork-on-sorry" style="display:none">You already imported a wallet, Hard fork is <strong>enabled</strong></p>
+		<p id="export-deciders-hardfork-off-sorry" style="display:none">You already imported a wallet, Hard fork is <strong>disabled</strong></p>
+
+
+		<h3>Import</h3>
+		<div class="w3-container">
+		  <input id="import-check" class="w3-check" type="checkbox">
+		  <label class="w3-text-gray">Allow paste import wallet</label>
+		</div>
+		<h3>Load</h3>
+		<div class="w3-container">
+			<input style="display: none" type="file" multiple="multiple" id="import-file" name="import-file" accept=".dat,.txt,text/plain,application/octet-stream" />
+
+		        <div class="w3-cell-row">
+		        <div class="w3-container w3-cell">
+		        <button id="import-file-load" name="fileload" class="w3-btn w3-blue w3-ripple">
+			  <span class="div sk-fading-circle" id="import-file-load-spinner">
+			    <span class="div sk-circle1 sk-circle"></span>
+			    <span class="div sk-circle2 sk-circle"></span>
+			    <span class="div sk-circle3 sk-circle"></span>
+			    <span class="div sk-circle4 sk-circle"></span>
+			    <span class="div sk-circle5 sk-circle"></span>
+			    <span class="div sk-circle6 sk-circle"></span>
+			    <span class="div sk-circle7 sk-circle"></span>
+			    <span class="div sk-circle8 sk-circle"></span>
+			    <span class="div sk-circle9 sk-circle"></span>
+			    <span class="div sk-circle10 sk-circle"></span>
+			    <span class="div sk-circle11 sk-circle"></span>
+			    <span class="div sk-circle12 sk-circle"></span>
+			  </span>
+		        File load
+		          <span class="div sk-fading-circle-right"></span></button></div>
+		        <div class="w3-container w3-cell" style="width:100%;">
+			  <div class="w3-container w3-green w3-padding w3-center" id="import-file-progress" style="width:100%">100%</div>
+			</div>
+			</div>
+			
+		</div>
+		<h3>Recovery</h3>
+		<div class="w3-container">
+			<input style="display: none" type="file" multiple="multiple" id="import-file-bug" name="import-file-bug" accept=".dat,.txt,text/plain,application/octet-stream" />
+
+		        <div class="w3-cell-row">
+		        <div class="w3-container w3-cell">
+		        <button id="import-file-load-bug" name="fileload" class="w3-btn w3-blue w3-ripple">
+			  <span class="div sk-fading-circle" id="import-file-load-spinner-bug">
+			    <span class="div sk-circle1 sk-circle"></span>
+			    <span class="div sk-circle2 sk-circle"></span>
+			    <span class="div sk-circle3 sk-circle"></span>
+			    <span class="div sk-circle4 sk-circle"></span>
+			    <span class="div sk-circle5 sk-circle"></span>
+			    <span class="div sk-circle6 sk-circle"></span>
+			    <span class="div sk-circle7 sk-circle"></span>
+			    <span class="div sk-circle8 sk-circle"></span>
+			    <span class="div sk-circle9 sk-circle"></span>
+			    <span class="div sk-circle10 sk-circle"></span>
+			    <span class="div sk-circle11 sk-circle"></span>
+			    <span class="div sk-circle12 sk-circle"></span>
+			  </span>
+		        File recovery
+		          <span class="div sk-fading-circle-right"></span></button></div>
+			</div>
+			
+		</div>
+	    </div>
+	</div>
+	<div class="w3-row-padding">
+            <div class="w3-panel">
+		<h3>Scan mempool</h3>
+
+                <div class="w3-cell-row">
+                <div class="w3-container w3-cell">
+                <button id="import-scan-mempool" name="stealth" class="w3-btn w3-blue w3-ripple">
+		  <span class="div sk-fading-circle" id="import-scan-mempool-spinner">
+		    <span class="div sk-circle1 sk-circle"></span>
+		    <span class="div sk-circle2 sk-circle"></span>
+		    <span class="div sk-circle3 sk-circle"></span>
+		    <span class="div sk-circle4 sk-circle"></span>
+		    <span class="div sk-circle5 sk-circle"></span>
+		    <span class="div sk-circle6 sk-circle"></span>
+		    <span class="div sk-circle7 sk-circle"></span>
+		    <span class="div sk-circle8 sk-circle"></span>
+		    <span class="div sk-circle9 sk-circle"></span>
+		    <span class="div sk-circle10 sk-circle"></span>
+		    <span class="div sk-circle11 sk-circle"></span>
+		    <span class="div sk-circle12 sk-circle"></span>
+		  </span>
+                Scan mempool
+                  <span class="div sk-fading-circle-right"></span></button></div>
+                <div class="w3-container w3-cell" style="width:100%;">
+		  <div class="w3-container w3-green w3-padding w3-center" id="import-progress" style="width:100%">100%</div>
+		</div>
+		</div>
+	    </div>
+	</div>
+</div>
+<div id="body-coins" style="display:none">
+	<div class="w3-row-padding">
+          <h1>Haircomb Coins</h1>
+	    <div class="w3-half">
+		<h3>Claims</h3>
+
+
+		
+		<div>
+		  <button id="coins-combbases-refresh" class="w3-btn w3-blue w3-padding-large w3-ripple">
+		  <span class="div sk-fading-circle" id="coins-combbases-refresh-spinner">
+		    <span class="div sk-circle1 sk-circle"></span>
+		    <span class="div sk-circle2 sk-circle"></span>
+		    <span class="div sk-circle3 sk-circle"></span>
+		    <span class="div sk-circle4 sk-circle"></span>
+		    <span class="div sk-circle5 sk-circle"></span>
+		    <span class="div sk-circle6 sk-circle"></span>
+		    <span class="div sk-circle7 sk-circle"></span>
+		    <span class="div sk-circle8 sk-circle"></span>
+		    <span class="div sk-circle9 sk-circle"></span>
+		    <span class="div sk-circle10 sk-circle"></span>
+		    <span class="div sk-circle11 sk-circle"></span>
+		    <span class="div sk-circle12 sk-circle"></span>
+		  </span>
+		  Load claims</button>
+
+		  <div class="w3-dropdown-hover">
+		    <button id="coins-refresh-depth" class="w3-btn w3-gray w3-padding-large w3-ripple">All
+			<i class="fa fa-caret-down"></i></button>
+		    <div class="w3-dropdown-content w3-bar-block w3-border">
+		      <a href="#" onclick="this.parentElement.parentElement.children[0].innerHTML=this.innerHTML" class="w3-bar-item w3-button">All
+			<i class="fa fa-caret-down"></i></a>
+		      <a href="#" onclick="this.parentElement.parentElement.children[0].innerHTML=this.innerHTML" class="w3-bar-item w3-button"><span title="1000">1000</span>
+			<i class="fa fa-caret-down"></i></a>
+		      <a href="#" onclick="this.parentElement.parentElement.children[0].innerHTML=this.innerHTML" class="w3-bar-item w3-button"><span title="10000">10000</span>
+			<i class="fa fa-caret-down"></i></a>
+		      <a href="#" onclick="this.parentElement.parentElement.children[0].innerHTML=this.innerHTML" class="w3-bar-item w3-button"><span title="100000">100000</span>
+			<i class="fa fa-caret-down"></i></a>
+		    </div>
+		  </div>
+		</div>
+
+
+		  <table class="w3-table w3-striped w3-border w3-centered">
+		   <thead>
+		    <tr>
+		      <th>Height</th>
+		      <th>Address</th>
+		      <th>Claimed</th>
+		    </tr>
+		   </thead>
+		   <tbody id="coins-combbases-body"></tbody>
+		  </table>
+
+		<div class="w3-show-inline-block">
+		<div class="w3-bar w3-border w3-round" id="coins-combbases-paginator"></div>
+		</div>
+
+	    </div>
+	    <div class="w3-half">
+		<h3>Balances</h3>
+
+		  <table class="w3-table w3-striped w3-border w3-centered">
+		   <thead>
+		    <tr>
+		      <th>Comb Address</th>
+		      <th>Balance</th>
+		    </tr>
+		   </thead>
+		   <tbody id="coins-balances-body"></tbody>
+		  </table>
+		  
+		<div class="w3-show-inline-block">
+		<div class="w3-bar w3-border w3-round" id="coins-balances-paginator">
+		  <a class="w3-bar-item w3-button" href="#">«</a>
+		  <a class="w3-bar-item w3-button" href="#">0</a>
+		  <a class="w3-bar-item w3-button" href="#">»</a>
+		</div>
+		</div>
+	    </div>
+	</div>
+</div>
+<div id="body-docs" style="display:none">
+	<div class="w3-row-padding">
+          <h1>Haircomb Documentation</h1>
+		<h3>Public comb protocol documentation</h3>
+
+		<a href="doc.html">View Public comb protocol documentation</a>
+
+		<h3>Quantum Resistant Crypto Currency Information Page</h3>
+
+		<a href="https://wiki.haircomb.info">Quantum Resistant Crypto Currency Haircomb</a>
+	</div>
+</div>
+
+
+<div id="body-chart" style="display:none">
+
+	<div class="w3-row-padding">
+	  <h1>Haircomb Bids/Chart</h1>
+		<h3>Bids</h3>
+		<button id="chart-bids-reload-btn" class="w3-btn w3-blue">Reload</button>
+		<button id="chart-bids-filter-btn" class="w3-btn w3-blue">Filter</button>
+		  <table class="w3-table w3-striped w3-border w3-centered">
+		   <thead>
+		    <tr>
+		      <th>Claim</th>
+		      <th>Tx</th>
+		      <th>Fee per WU</th>
+		      <th>Fee per vbyte</th>
+		    </tr>
+		   </thead>
+		   <tbody id="chart-bids-table"></tbody>
+		  </table>
+		<h3>Chart</h3>
+		<div id="chart-chart-div"><img id="chart-chart-img" /></div>
+		<button id="chart-reload-btn" class="w3-btn w3-blue">Reload</button>
+		<button id="chart-in-btn" class="w3-btn w3-blue">Zoom In</button>
+		<button id="chart-out-btn" class="w3-btn w3-blue">Zoom Out</button>
+		<button id="chart-left-btn" class="w3-btn w3-blue">Left</button>
+		<button id="chart-right-btn" class="w3-btn w3-blue">Right</button>
+	</div>
+
+</div>
+
+</div>
+
+<div id="paywall" style="display:none">
+	<div class="w3-row-padding">
+		<h1>Paying to: <span id="paywall-recipient">Loading...</span></h1>
+		<h2>Address: <span id="paywall-address">Loading...</span></h2>
+		<h3>Deposits Balance: <span id="paywall-balance">Loading...</span></h3>
+		<h3>Deposits Rejected: <span id="paywall-rejected">Loading...</span></h3>
+
+		<p>To pay using bitcoin, please deposit 0.00000330 bitcoin (330 sats) to any address below</p>
+
+		<div><img alt="barcode" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="  id="paywall-wallet-image" /></div>
+
+		<button style="display:none" id="paywall-load-btn" class="w3-btn w3-blue">Load</button>
+		<button style="display:none" id="paywall-reload-btn" class="w3-btn w3-blue">Reload</button>
+		<button style="display:none" id="paywall-sync-btn" class="w3-btn w3-blue">Sync</button>
+		  <table class="w3-table w3-striped w3-border w3-centered">
+		   <thead>
+		    <tr>
+		      <th>Address</th>
+		      <th>Pending</th>
+		      <th>Rejected</th>
+		      <th>Deposited</th>
+		    </tr>
+		   </thead>
+		   <tbody id="paywall-stealths-keys">
+		   </tbody>
+		  </table>
+		<div style="display:none" class="w3-bar w3-border w3-round w3-threequarter" id="paywall-stealths-paginator">
+		  <a class="w3-bar-item w3-button w3-green" href="#">1</a>
+		  <a class="w3-bar-item w3-button" href="#">2</a>
+		  <a class="w3-bar-item w3-button" href="#">3</a>
+		  <a class="w3-bar-item w3-button" href="#">4</a>
+		  <a class="w3-bar-item w3-button" href="#">5</a>
+		  <a class="w3-bar-item w3-button w3-right" href="#">»</a>
+		</div>
+	</div>
+
+</div>
+
+
+<script src="wasm_exec.js" crossorigin="anonymous"></script>
+<script>
+	function m(str) {
+		// 1. set the data for wasm
+		document.getElementById("home-main-load").innerHTML = btoa(JSON.stringify(str));
+		// 2. notify wasm about new data by clicking the invisible textarea
+		document.getElementById("home-main-load").click();
+	}
+
+	const go = new Go();
+	WebAssembly.instantiateStreaming(fetch("combfullui.wasm"), go.importObject).then((result) => {
+		go.run(result.instance);
+	});
+</script>
+<script src="main.js" crossorigin="anonymous"></script>
+</body>
+</html>

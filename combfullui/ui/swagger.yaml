@@ -51,10 +51,10 @@ info:
   
   ## Cloud instance (testnet). ##
 
-  - [https://test.haircomber.com](https://test.haircomber.com)
+  - [https://test.haircomb.biz](https://test.haircomb.biz)
     - Test server
 
-  - [http://test.haircomber.com:21212](http://test.haircomber.com:21212)
+  - [http://test.haircomb.biz:21212](http://test.haircomb.biz:21212)
     - Test server
     - No Nginx and No HTTPS overhead
 
@@ -76,9 +76,9 @@ servers:
     description: Main (production) server NO HTTPS
   - url: http://62.182.84.108:21212
     description: Main (production) server NO DNS, NO HTTPS
-  - url: https://core.haircomber.com
+  - url: https://core.haircomb.biz
     description: Main (production) server
-  - url: http://core.haircomber.com:21212
+  - url: http://core.haircomb.biz:21212
     description: Main (production) server NO HTTPS
   - url: http://72.5.43.45:21212
     description: Main (production) server NO DNS, NO HTTPS

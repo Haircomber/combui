@@ -3,7 +3,7 @@ package main
 import "encoding/hex"
 import "strings"
 
-func (a *AppWallet) controller_used_stealth(backingkey string, off uint64) {
+func (a *AppWallet) controller_used_stealth(backingkey string, off uint64, isClaimingVisible bool) {
 
 	if !AddrsCompatible(backingkey) {
 		return
@@ -41,10 +41,10 @@ func (a *AppWallet) controller_used_stealth(backingkey string, off uint64) {
 		stealth_unknown[commitm] = combaddr
 	}
 	controller_used_page(stealth_unknown)
-	a.controller_stealth(backingkey, off)
+	a.controller_stealth(backingkey, off, isClaimingVisible)
 }
 
-func (a *AppWallet) controller_stealth(backingkey string, off uint64) {
+func (a *AppWallet) controller_stealth(backingkey string, off uint64, isClaimingVisible bool) {
 
 	if !AddrsCompatible(backingkey) {
 		return
@@ -81,7 +81,7 @@ func (a *AppWallet) controller_stealth(backingkey string, off uint64) {
 
 	}
 
-	a.ViewStealth(Value(a.stealthkey), off)
+	a.ViewStealth(Value(a.stealthkey), off, isClaimingVisible)
 }
 
 func (a *AppWallet) controller_stealth_sweep(backingkey string, off uint64) {
@@ -133,14 +133,15 @@ func (a *AppWallet) controller_stealth_sweep(backingkey string, off uint64) {
 	}
 
 	if swept {
+		var isClaimingVisible = len(Value(a.stealthbase)) != 64
 		if backingkey == Value(a.key) {
 			keysbalances[backingkey] = CheckBalance(backingkey)
 			a.ViewKeys(backingkey)
-			a.ViewStealth(backingkey, off)
+			a.ViewStealth(backingkey, off, isClaimingVisible)
 		} else {
 			stealthbalances[backingkey] = CheckBalance(backingkey)
-			a.controller_stealth(backingkey, off)
-			a.ViewStealth(backingkey, off)
+			a.controller_stealth(backingkey, off, isClaimingVisible)
+			a.ViewStealth(backingkey, off, isClaimingVisible)
 		}
 	}
 }

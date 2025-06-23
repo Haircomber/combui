@@ -49,11 +49,16 @@ func main() {
 	} else {
 		app := NewApp()
 		app.bindEvents()
-		app.home.redrawJsMainPageData(app.export)
+		app.home.redrawJsMainPageData(app.export, app.wallet)
 		app.coins.combbasesrefresh.Call("click")
 		app.loadCss()
 		backend = DocumentOrigin()
 		SetValue(app.home.backend, backend)
+		// having here anything pre-filled is a fund-loss risk
+		SetValue(app.wallet.change, "")
+		SetValue(app.pay.keysource, "")
+		SetValue(app.pay.keychange, "")
+		SetValue(app.pay.stacktop, "")
 	}
 	select {}
 }

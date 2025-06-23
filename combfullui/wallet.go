@@ -150,6 +150,12 @@ func wallet_generate_brain(w http.ResponseWriter, r *http.Request, ps httprouter
 
 	commits_mutex.Unlock()
 	commit_cache_mutex.Unlock()
+
+	// NO LOG PASSWORD IN BROWSER HISTORY
+	w.Header().Set("Cache-Control", "no-store, private, max-age=0")
+	w.Header().Set("Pragma", "no-cache")
+	w.Header().Set("X-Accel-Expires", "0")
+	http.Redirect(w, r, "/wallet/", http.StatusTemporaryRedirect)
 }
 
 func wallet_generate_key(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -347,6 +353,27 @@ func wallet_view(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	fmt.Fprintf(w, `
 		<a href="/wallet/generator">key generate (always fully save your wallet after pressing this button)</a>
+	`)
+	fmt.Fprintf(w, `<script type="text/javascript">
+			  var pwd = function() {
+				if (!document.getElementById("walletkeypass").validity.valid) {
+					document.getElementById("walletkeygen").action="brain/0/0";
+					document.getElementById("walletok").value="NG";
+					return false;
+				}
+			    document.getElementById("walletkeygen").action="brain/"+
+				encodeURIComponent(document.getElementById("walletkeycount").value)+"/"+
+				encodeURIComponent(document.getElementById("walletkeypass").value)+"#";
+			    document.getElementById("walletok").value="OK";
+			    return false;
+			  };
+
+			</script>
+		<div>
+			Key count: <input id="walletkeycount" autocomplete="off" type="text" name="username" oninput="javascript: pwd()" onpropertychange="javascript: pwd()" />
+			Brain password: <input id="walletkeypass" autocomplete="off" type="password" required minlength="1" pattern="[^\/]+" name="password" oninput="javascript: pwd()" onpropertychange="javascript: pwd()" /><span class="validity"></span>
+			<form method="GET" action="brain/0/0" id="walletkeygen"><input id="walletok" type="submit" onclick="javascript:this.value=''" name="submit" value="OK" style="width: 10em" /></form>
+		</div>
 	`)
 	fmt.Fprintf(w, `
 		<div><a href="/stack/">liquidity stacks</a></div>
