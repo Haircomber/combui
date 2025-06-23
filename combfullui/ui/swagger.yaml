@@ -1,0 +1,728 @@
+openapi: 3.0.0
+info:
+  title: Public Comb Protocol API
+  description: "
+  # Public Comb Protocol #
+  
+  It is a protocol for a Haircomb Core to communicate with its clients. Haircomb Core is the software which maintains the haircomb commitment set for the haircomb crypto currency.
+  
+  # Authentication #
+  
+  Authentication is not in use.
+
+  # Api results content-type #
+  
+  Actual contents of the response may be JSONP encoded. Example in this docs is
+  
+  ```
+  {\"Success\":true,...}
+  ```
+  
+  Actual value received from the software may be
+  
+  ```
+  C({\"Success\":true,...});
+  ```
+  
+  The function name C in this case might be arbitrary uppercase and lowercase ascii letters. Swagger documentation, however, does not format jsonp nicely, that's why I use application/json for reference.
+
+  # Api results error handling #
+
+  In case of errors Success false will be reported. The HTTP code will be 203 in case of error, and 200 in the general case, allowing even clients unaware about http error codes to detect the error.
+
+  # Servers #
+  
+  ## Cloud instance (mainnet). ##
+  
+  - [https://core.haircomb.org](https://core.haircomb.org)
+    - Main production server
+    
+  - [http://core.haircomb.org:21212](http://core.haircomb.org:21212)
+    - Main production server
+    - No Nginx and No HTTPS overhead
+
+  - [http://72.5.43.45:21212](http://72.5.43.45:21212)
+    - Main production server
+    - No DNS, No Nginx and No HTTPS overhead
+    
+  - [http://62.182.84.108:21212](http://62.182.84.108:21212)
+    - Main production server
+    - No DNS, No Nginx and No HTTPS overhead
+  
+  ## Cloud instance (testnet). ##
+
+  - [https://test.haircomber.com](https://test.haircomber.com)
+    - Test server
+
+  - [http://test.haircomber.com:21212](http://test.haircomber.com:21212)
+    - Test server
+    - No Nginx and No HTTPS overhead
+
+  - [http://65.38.121.91:21212](http://65.38.121.91:21212)
+    - Test server
+    - No DNS, Nginx and No HTTPS overhead
+  
+  ## Self hosted localhost instance (mainnet / testnet). ##
+
+  - [http://localhost:21212](http://localhost:21212)
+    - Local instance
+
+  "
+  version: 0.5.3
+servers:
+  - url: https://core.haircomb.org
+    description: Main (production) server
+  - url: http://core.haircomb.org:21212
+    description: Main (production) server NO HTTPS
+  - url: http://62.182.84.108:21212
+    description: Main (production) server NO DNS, NO HTTPS
+  - url: https://core.haircomber.com
+    description: Main (production) server
+  - url: http://core.haircomber.com:21212
+    description: Main (production) server NO HTTPS
+  - url: http://72.5.43.45:21212
+    description: Main (production) server NO DNS, NO HTTPS
+  - url: http://65.38.121.91:21212/
+    description: Test (experimental) server
+  - url: http://localhost:21212/
+    description: Local (self hosted) instance
+paths:
+  /*/{anything}:
+    get:
+      summary: Redirect To Ui Index Html Redirector
+      description: This endpoint redirects user to the index html static resouce. It is activated if the path after the last slash ("/") contains no dots. It is the only 0 dot endpoint. The path where the user is redirected is equal to "ui/index.html"
+      operationId: v0.RedirectToIndexHtmlRedirector
+      tags:
+        - Frontend (0 dot)
+      parameters:
+        - in: path
+          name: anything
+          schema:
+            type: string
+          required: true
+          description: Arbitrary string not containing dots. It is ignored.
+      responses:
+        '301':
+          description: Successful Redirect To ui/index.html
+          content:
+            text/html:
+              example:
+                <meta http-equiv="refresh" content="0; url=ui/index.html">
+              schema:
+                $ref: '#/components/schemas/RedirectToIndexHtml'
+        '504':
+          description: Nginx Gateway Timeout (Service is Starting)
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/NginxGatewayTimeout'
+  /*/main.{json}:
+    get:
+      summary: Main Page Controller
+      description: Loads the main page information. This contains information regarding the node syncing status, as well as network to which the node is synchronized.
+      operationId: v0.MainPageController
+      tags:
+        - Backend (1 dot)
+      parameters:
+        - in: path
+          name: json
+          schema: {}
+          required: true
+          description: Arbitrary string not containing dots. It is ignored by the server, serves as an extension for the jsonp resoruce. Usual values are js, json, jsonp.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MainPageInfo'
+              example:
+                Testnet: false
+                OutOfSync: false
+                LastBtcHeight: 811035
+                CryptoFingerPrint: dfc83b86041348a256f8cf3f24b1888e8c5ed363ad546299f377015eb094d908
+                CommitmentsCount: 21129936
+                Accelerator: 999AB5E53D0352224F1C656D756710EF5A2DFE72B48A3DD9EA7E04D8BC5C449A
+                BlockHash: '000000000000000000003441ad183b60b2280b0cf5ecb7566d6e6174b9e48551'
+                SumExistence: 44179636923846
+                SumRemaining: 1103730671845172
+                BlockHeight: 811035
+                Success: true
+                P2WSHCount: 31766113
+                ShutdownButton: false
+        '504':
+          description: Nginx Gateway Timeout (Service is Starting)
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/NginxGatewayTimeout'
+        '203':
+          description: Processing Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessingError'
+              example:
+                {"Success":false}
+
+  /*/wasm_exec.{js}:
+    get:
+      summary: Static Javascript Resource Loader
+      description: Loads the javascript resource required to execute web assembly. This is a statical file provided by the golang compiler. We reserve the right to make a downstream modification enabling compatibility with more golang compilers.
+      operationId: v0.StaticJavascriptResourceLoader
+      tags:
+        - Frontend (1 dot)
+      parameters:
+        - in: path
+          name: js
+          schema:
+            type: string
+          required: true
+          description: Arbitrary string not containing dots. It is ignored by the server, serves as an extension for the js resoruce. Usual value is js.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/javascript:
+              schema: {}
+        '504':
+          description: Nginx Gateway Timeout (Service is Starting)
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/NginxGatewayTimeout'
+        '203':
+          description: Processing Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessingError'
+              example:
+                {"Success":false}
+  /*/combfullui.{wasm}:
+    get:
+      summary: Static Wasm Resource Loader
+      operationId: v0.StaticWasmResourceLoader
+      tags:
+        - Frontend (1 dot)
+      parameters:
+        - in: path
+          name: wasm
+          schema:
+            type: string
+          required: true
+          description: Arbitrary string not containing dots. It is ignored by the server, serves as an extension for the wasm resoruce. Usual value is wasm.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /*/index.{html}:
+    get:
+      summary: Static Html Resource Loader
+      operationId: v0.StaticHtmlResourceLoader
+      tags:
+        - Frontend (1 dot)
+      parameters:
+        - in: path
+          name: html
+          schema:
+            type: string
+          required: true
+          description: Arbitrary string not containing dots. It is ignored by the server, serves as an extension for the html resoruce. Usual value is html or htm.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            text/html:
+              schema: {}
+  /*/style.{css}:
+    get:
+      summary: Static Css Resource Loader
+      operationId: v0.StaticCssResourceLoader
+      tags:
+        - Frontend (1 dot)
+      parameters:
+        - in: path
+          name: css
+          schema:
+            type: string
+          required: true
+          description: Arbitrary string not containing dots. It is ignored by the server, serves as an extension for the css resoruce. Usual value is css.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /*/{height}.js:
+    get:
+      summary: Db Content Call Controller
+      description: Loads information about a block from the database for a specific Block Height
+      operationId: v0.DbContentCallController
+      tags:
+        - Backend (1 dot)
+      parameters:
+        - in: path
+          name: height
+          schema:
+            type: integer
+          required: true
+          description: Block height, must be 16 digits, with leading zeroes.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              example:
+                Testnet: false
+                DbData:
+                  BlockHash: 0000000000000000001c8018d9cb3b742ef25114f27563e3fc4a1902167f9893
+                  BlockShaSum: 9de8860ed7c2ac3189919ab48c786afe2457f399f9f3677b7e8347e1b2ab637e
+                  CombBase: cdbf909e935c855d3e8d1b61aeb9c5e3c03ae8021b286839b1a72f2e48fdba70
+                  CommitsCummulative: 0
+                  Fingerprint: '0000000000000000000000000000000000000000000000000000000000000000'
+                  P2wshCount: 1
+                Commits:
+                  cdbf909e935c855d3e8d1b61aeb9c5e3c03ae8021b286839b1a72f2e48fdba70:
+                    Height: 481824
+                    CommitNumber: 0
+                    TxNumber: 495
+                    OutputNumber: 0
+                Success: true
+              schema:
+                $ref: '#/components/schemas/BlockInfo'
+        '203':
+          description: Processing Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessingError'
+              example:
+                {"Success":false}
+  /*/{min_height}.{max_height}.js:
+    get:
+      summary: Base Range Call Controller
+      description: Loads combbases from blocks more or equal to Minimal block height and less than equal to Maximal block height (result is sorted)
+      operationId: v0.BaseRangeCallController
+      tags:
+        - Backend (2 dot)
+      parameters:
+        - in: path
+          name: min_height
+          schema:
+            type: integer
+          required: true
+          description: Minimal block height, must be 16 digits, with leading zeroes.
+        - in: path
+          name: max_height
+          schema:
+            type: integer
+          required: true
+          description: Maximal block height, must be 16 digits, with leading zeroes.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseRangeInfo'
+              example:
+                Testnet: false
+                Combbases:
+                  - Combbase: 5c88555c5e8abe174a80e9872e32470fb54d66535ec67c860b920be972c549dd
+                    Height: 800000
+                Success: true
+        '203':
+          description: Processing Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessingError'
+              example:
+                {"Success":false}
+  /*/{funcs}.{tweak}.{prefixLengthBytes}.{maxHeight}.{prefixesValues}.js:
+    get:
+      summary: Get Commits Prefx Values Call Controller
+      description: Loads commits from the commitment set whose prefixes are in the prefix values list (result is not guaranteed to be sorted)
+      operationId: v0.GetCommitsPrefxValuesCallController
+      tags:
+        - Backend (5 dot)
+      parameters:
+        - in: path
+          name: funcs
+          schema:
+            type: integer
+          required: true
+          description: Number of hash functions to use per value in the response bloom filter (00000001-00000050)
+        - in: path
+          name: tweak
+          schema:
+            type: integer
+          required: true
+          description: Tweak for use in the response bloom filter (0000000000000000-0000004294967295)
+        - in: path
+          name: prefixLengthBytes
+          schema:
+            type: integer
+          required: true
+          description: Prefix is the number of bytes of each prefix in the prefixesValues list (00000003-00000016)
+        - in: path
+          name: maxHeight
+          schema:
+            type: integer
+          required: true
+          description: Maximum block height which is queried (0000000000000000-9999999999999999)
+        - in: path
+          name: prefixesValues
+          schema:
+            type: string
+          required: true
+          description: Hex encoded prefix values list of concatenated prefix values
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCommitsInfo'
+              example:
+                Testnet: false
+                Commits:
+                  fffffff89d074a1bf1375a6abc56e0b3e84f6278035f297181978257155a7f45:
+                    Height: 799295
+                    CommitNum: 16
+                    TxNum: 137
+                    OutNum: 8
+                    Combbase: false
+                  ffffffffffff9c6d4498e8ce6fc05ae726c3b2dc983422307f11ffffffffffff:
+                    Height: 650248
+                    CommitNum: 5
+                    TxNum: 1000
+                    OutNum: 0
+                    Combbase: false
+                Bloom: null
+                Count: 2
+                Success: true
+                Height: 811036
+        '203':
+          description: Processing Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessingError'
+              example:
+                {"Success":false}
+  /*/{funcs}.{tweak}.{prefixLengthBytes}.{maxHeight}.{prefixesValues}.{minHeight}.{minCommitNum}.js:
+    get:
+      summary: Get Commits Prefx Values Minimum Call Controller
+      description: Loads commits from the commitment set whose prefixes are in the prefix values list and are above minimum (result is not guaranteed to be sorted)
+      operationId: v0.GetCommitsPrefxValuesMinimumCallController
+      tags:
+        - Backend (7 dot)
+      parameters:
+        - in: path
+          name: funcs
+          schema:
+            type: integer
+          required: true
+          description: Number of hash functions to use per value in the response bloom filter (00000001-00000050)
+        - in: path
+          name: tweak
+          schema:
+            type: integer
+          required: true
+          description: Tweak for use in the response bloom filter (0000000000000000-0000004294967295)
+        - in: path
+          name: prefixLengthBytes
+          schema:
+            type: integer
+          required: true
+          description: Prefix is the number of bytes of each prefix in the prefixesValues list (00000007-00000016)
+        - in: path
+          name: maxHeight
+          schema:
+            type: integer
+          required: true
+          description: Maximum block height which is queried (0000000000000000-9999999999999999)
+        - in: path
+          name: prefixesValues
+          schema:
+            type: string
+          required: true
+          description: Hex encoded prefix values list of concatenated prefix values
+        - in: path
+          name: minHeight
+          schema:
+            type: integer
+          required: true
+          description: Minimum block height which is queried (0000000000000000-9999999999999999)
+        - in: path
+          name: minCommitNum
+          schema:
+            type: integer
+          required: true
+          description: Minimum commit num within min height which is queried (0000000000000000-0000004294967295)
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCommitmentsInfo'
+              example:
+                Testnet: false
+                Commitments:
+                  -
+                    Commit: "fffffff89d074a1bf1375a6abc56e0b3e84f6278035f297181978257155a7f45"
+                    Height: 799295
+                    CommitNum: 16
+                    TxNum: 137
+                    OutNum: 8
+                    Combbase: false
+                  -
+                    Commit: "ffffffffffff9c6d4498e8ce6fc05ae726c3b2dc983422307f11ffffffffffff"
+                    Height: 650248
+                    CommitNum: 5
+                    TxNum: 1000
+                    OutNum: 0
+                    Combbase: false
+                Bloom: null
+                Count: 2
+                Success: true
+                Height: 811036
+        '203':
+          description: Processing Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessingError'
+              example:
+                {"Success":false}
+components:
+  schemas:
+    MainPageInfo:
+      items:
+        $ref: '#/components/schemas/MainPageInfo'
+      type: object
+      title: MainPageInfo
+      properties:
+        Testnet:
+          type: boolean
+        OutOfSync:
+          type: boolean
+        LastBtcHeight:
+          type: integer
+        CryptoFingerPrint:
+          type: string
+        CommitmentsCount:
+          type: integer
+        Accelerator:
+          type: string
+        BlockHash:
+          type: string
+        SumExistence:
+          type: integer
+        SumRemaining:
+          type: integer
+        BlockHeight:
+          type: integer
+        Success:
+          type: boolean
+        P2WSHCount:
+          type: integer
+        ShutdownButton:
+          type: boolean
+      required:
+        - Testnet
+        - OutOfSync
+        - LastBtcHeight
+        - CryptoFingerPrint
+        - CommitmentsCount
+        - Accelerator
+        - BlockHash
+        - SumExistence
+        - SumRemaining
+        - BlockHeight
+        - Success
+        - P2WSHCount
+        - ShutdownButton
+    BaseRangeInfo:
+      items:
+        $ref: '#/components/schemas/BaseRangeInfo'
+      type: object
+      properties:
+        Testnet:
+          type: boolean
+        Combbases:
+          type: array
+          items:
+            type: object
+            properties:
+              Combbase:
+                type: string
+              Height:
+                type: integer
+            required:
+              - Combbase
+              - Height
+        Success:
+          type: boolean
+      required:
+        - Testnet
+        - Combbases
+        - Success
+    GetCommitmentsInfo:
+      items:
+        $ref: '#/components/schemas/GetCommitmentsInfo'
+      type: object
+      properties:
+        Testnet:
+          type: boolean
+        Commitments:
+          type: array
+          items:
+            type: object
+            properties:
+              Commit:
+                type: string
+              Height:
+                type: integer
+              CommitNum:
+                type: integer
+              TxNum:
+                type: integer
+              OutNum:
+                type: integer
+              Combbase:
+                type: boolean
+            required:
+              - Commit
+              - Height
+              - CommitNum
+              - TxNum
+              - OutNum
+              - Combbase
+        Bloom:
+          type: string
+        Count:
+          type: integer
+        Success:
+          type: boolean
+        Height:
+          type: integer
+      required:
+        - Testnet
+        - Commitments
+        - Count
+        - Success
+        - Height
+    GetCommitsInfo:
+      items:
+        $ref: '#/components/schemas/GetCommitsInfo'
+      type: object
+      properties:
+        Testnet:
+          type: boolean
+        Commits:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              Height:
+                type: integer
+              CommitNum:
+                type: integer
+              TxNum:
+                type: integer
+              OutNum:
+                type: integer
+              Combbase:
+                type: boolean
+            required:
+              - Height
+              - CommitNum
+              - TxNum
+              - OutNum
+              - Combbase
+        Bloom:
+          type: string
+        Count:
+          type: integer
+        Success:
+          type: boolean
+        Height:
+          type: integer
+      required:
+        - Testnet
+        - Commits
+        - Count
+        - Success
+        - Height
+    BlockInfo:
+      items:
+        $ref: '#/components/schemas/BlockInfo'
+      type: object
+      properties:
+        Testnet:
+          type: boolean
+        Commits:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              Height:
+                type: integer
+              CommitNumber:
+                type: integer
+              TxNumber:
+                type: integer
+              OutputNumber:
+                type: integer
+            required:
+              - Height
+              - CommitNumber
+              - TxNumber
+              - OutputNumber
+        DbData:
+          type: object
+          properties:
+            BlockHash:
+              type: string
+            BlockShaSum:
+              type: string
+            CombBase:
+              type: string
+            CommitsCummulative:
+              type: integer
+            Fingerprint:
+              type: string
+            P2wshCount:
+              type: integer
+        Success:
+          type: boolean
+      required:
+        - Testnet
+        - DbData
+        - Success
+    RedirectToIndexHtml:
+      items:
+        $ref: '#/components/schemas/RedirectToIndexHtml'
+      type: object
+      title: RedirectToIndexHtml
+    NginxGatewayTimeout:
+      items:
+        $ref: '#/components/schemas/NginxGatewayTimeout'
+      type: object
+      title: NginxGatewayTimeout
+    ProcessingError:
+      properties:
+        Success:
+          type: boolean
+          title: Boolean
+          example: false
+      items:
+        $ref: '#/components/schemas/ProcessingError'
+      type: object
+      title: ProcessingError

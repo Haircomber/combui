@@ -1,0 +1,39 @@
+HAIRCOMB TESNTET WHITEPAPER v1
+
+Abstract: A public haircomb testnet would make experimentation with the coin easier and cheaper.
+
+1. Address format
+
+   We will be using lowercase addresses / deciders on the testnet. Internal identifiers, such as
+   liquidity stacks and identifiers in wallet format remain upper case. The hex loading algo was
+   fixed to be able to load lowercase.
+
+2. Hashing format (Domain separation)
+
+   Instead of normal SHA256(x), testnet uses SHA256(w + w + x), where w is this whitepaper hash. It's there
+   twice to align with sha256's internal block size. This is true for almost all hashing operations.
+
+   This means, that, commitments, for instance use:
+   SHA256(testnet_whitepaper + testnet_whitepaper + mainnet_whitepaper + commited_value)
+
+   Only place, where usual SHA256 is still used, is internal hashing - in the leveldb format
+   (the in-block checksum).
+
+3. Database
+
+   The database is stored in the commits_testnet folder.
+
+4. Wallet format
+
+   To prevent somebody from accidentally loading their main net wallet, the slashes in the wallet format use the
+   (\) character, instead of the usual (/) character. This, combined with domain separation ensures
+   that, with high probability, spending a main net key on testnet would not be a problem.
+
+5. Starting the testnet
+
+   A config.txt file needs to be created, with the btcmode=testnet line in it. Bitcoin needs to run with the -testnet
+   flag.
+
+6. User interface
+
+   The main page contains the word Testnet, as well as a green background for almost all pages.

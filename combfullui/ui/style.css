@@ -1,0 +1,409 @@
+/* for hodling the api main.js response json */
+#home-main-load {
+display:none !important;
+}
+
+.d-flex {
+  display: flex;
+  padding-bottom: 1em;
+}
+
+/* top bar button min width */
+#mainbutton-home {
+  min-width: 7em;
+}
+#mainbutton-wallet {
+  min-width: 7em;
+}
+#mainbutton-pay {
+  min-width: 7em;
+}
+#mainbutton-imports {
+  min-width: 7em;
+}
+#mainbutton-coins {
+  min-width: 7em;
+}
+#mainbutton-docs {
+  min-width: 7em;
+}
+#mainbutton-chart {
+  min-width: 7em;
+}
+
+/*top bar color*/
+
+.w3-magenta {
+	color: white;
+	background-color: #d80073!important;
+}
+
+.w3-padding-top {
+	padding-top: 5px;
+}
+
+/* DROP DOWN */
+
+/* The dropdown container */
+.dropdown {
+  float: right;
+  overflow: hidden;
+}
+
+/* Dropdown button */
+.dropdown .dropbtn {
+  padding: 8px 16px;
+  border: none;
+  outline: none;
+  color: white;
+  background-color: inherit;
+  font-family: inherit; /* Important for vertical align on mobile phones */
+  margin: 0; /* Important for vertical align on mobile phones */
+}
+
+/* Add a red background color to navbar links on hover */
+.navbar a:hover, .dropdown:hover .dropbtn {
+  background-color: black;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+/* Add a grey background color to dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.w3-dropdown-content > a > i {
+	display:none;
+}
+
+/*
+ Hover link bold
+*/
+
+a:hover {
+  font-weight: bold;
+}
+
+/*
+ HEADER span overflow wrap on next line
+*/
+
+h3 > span {
+   font-size: 75%;
+}
+h3 > span.long {
+   word-break: break-all;
+   font-size: 70%;
+}
+
+td {
+  vertical-align: middle !important;
+}
+
+/*
+ Responsive barcode
+*/
+
+.parent {
+  margin-bottom: 1em;
+}
+
+.parent > div:first-child {
+  vertical-align: top !important;
+  width:49.99999% !important;
+}
+.parent > div:last-child {
+  vertical-align: bottom !important;
+  text-align: right;
+  float: right;
+  width:49.99999% !important;
+}
+
+.parent > div > img {
+    image-rendering: optimizeSpeed;             /* STOP SMOOTHING, GIVE ME SPEED  */
+    image-rendering: -moz-crisp-edges;          /* Firefox                        */
+    image-rendering: -o-crisp-edges;            /* Opera                          */
+    image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
+    image-rendering: pixelated;                 /* Universal support since 2021   */
+    image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
+    -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
+
+
+  width: 40%;
+  height: auto;
+}
+
+@media (min-width:601px){
+ .parent > div > img {
+  width: 50%;
+ }
+}
+
+/*
+ Multiline key
+*/
+
+#coins-combbases-body > tr > td {
+   word-break: break-all;
+}
+#coins-combbases-body > tr > td:first-child {
+   word-break: normal !important;
+}
+#pay-dest-body > tr > td:first-child {
+   word-break: break-all !important;
+}
+#coins-balances-body > tr > td:first-child {
+   word-break: break-all !important;
+}
+#chart-bids-table > tr > td:first-child {
+   word-break: break-all !important;
+}
+#chart-bids-table > tr > td:nth-child(2) {
+   word-break: break-all !important;
+}
+#wallet-keys > tr > td:last-child {
+   width: 10em;
+}
+#wallet-keys > tr > td.spent:nth-child(2) {
+   word-break: break-all;
+   text-decoration: none;
+}
+#wallet-keys > tr > td.unspent:nth-child(2) {
+   word-break: break-all;
+   text-decoration: underline;
+   color: #375560;
+   cursor: pointer;
+}
+#wallet-stealths > tr > td:last-child {
+   width: 10em;
+}
+#wallet-stealths > tr > td.spent:nth-child(2) {
+   word-break: break-all;
+   text-decoration: none;
+}
+#wallet-stealths > tr > td.unspent:nth-child(2) {
+   word-break: break-all;
+   text-decoration: underline;
+   color: #375560;
+   cursor: pointer;
+}
+
+#wallet-keys > tr.opened, #wallet-keys > tr.opened > td {
+   background-color: #d80073;
+   color: white !important;
+}
+
+#wallet-keys > tr > td.unspent:hover:nth-child(2) {
+   color: black !important;
+   font-weight: bold;
+   cursor: pointer;
+}
+
+#wallet-keys > tr.opened > td.unspent:hover:nth-child(2) {
+   font-weight: bold;
+   cursor: pointer;
+}
+
+#wallet-stealths > tr.opened, #wallet-stealths > tr.opened > td {
+   background-color: #d80073;
+   color: white !important;
+}
+
+#wallet-stealths > tr > td.unspent:hover:nth-child(2) {
+   color: black !important;
+   font-weight: bold;
+   cursor: pointer;
+}
+
+#wallet-stealths > tr.opened > td.unspent:hover:nth-child(2) {
+   font-weight: bold;
+   cursor: pointer;
+}
+
+#wallet-keys > tr.opened, #wallet-keys > tr.opened > td {
+   background-color: #d80073;
+   color: white !important;
+}
+
+#wallet-stealths > tr.opened, #wallet-stealths > tr.opened > td {
+   background-color: #d80073;
+   color: white !important;
+}
+
+#paywall-stealths-keys > tr > td.spent:first-child {
+   word-break: break-all;
+   text-decoration: none;
+}
+#paywall-stealths-keys > tr > td.unspent:first-child {
+   word-break: break-all;
+   text-decoration: underline;
+}
+
+#paywall-address {
+   word-break: break-all;
+}
+
+/*
+ address input overflow ellipsis
+*/
+#wallet-stealth-claim, #wallet-stealth-key, #wallet-key-claim, #wallet-key {
+  text-overflow:ellipsis;
+}
+
+
+/*
+wider button
+*/
+
+#home-shutdown, #wallet-gen-test, #wallet-gen-main, #wallet-used-check,
+#wallet-stealth-used-check, #coins-combbases-refresh {
+	padding-right: 54px !important
+}
+
+/*
+nowrap button
+*/
+
+button {
+	display: flex;
+	width: max-content;
+	white-space: nowrap;
+}
+
+/*
+ spinner circle
+*/
+
+.sk-fading-circle-right {
+  margin-left: 1em;
+  width: 22px;
+  height: 22px;
+  position: relative;
+  float: right;
+  display: block;
+  visibility: hidden;
+}
+
+.sk-fading-circle {
+  margin-right: 1em;
+  width: 22px;
+  height: 22px;
+  position: relative;
+  float: left;
+  display: block;
+  visibility: hidden;
+}
+
+.sk-fading-circle .sk-circle {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.sk-fading-circle .sk-circle::before {
+  content: '';
+  display: block;
+  margin: 0 auto;
+  width: 2px;
+  height: 6px;
+  background-color: #fff;
+  border-radius: 1px;
+  animation: sk-circleFadeDelay 994ms infinite ease-in-out both;
+}
+.sk-fading-circle .sk-circle2 {
+          transform: rotate(30deg);
+}
+.sk-fading-circle .sk-circle3 {
+          transform: rotate(60deg);
+}
+.sk-fading-circle .sk-circle4 {
+          transform: rotate(90deg);
+}
+.sk-fading-circle .sk-circle5 {
+          transform: rotate(120deg);
+}
+.sk-fading-circle .sk-circle6 {
+          transform: rotate(150deg);
+}
+.sk-fading-circle .sk-circle7 {
+          transform: rotate(180deg);
+}
+.sk-fading-circle .sk-circle8 {
+          transform: rotate(210deg);
+}
+.sk-fading-circle .sk-circle9 {
+          transform: rotate(240deg);
+}
+.sk-fading-circle .sk-circle10 {
+          transform: rotate(270deg);
+}
+.sk-fading-circle .sk-circle11 {
+          transform: rotate(300deg); 
+}
+.sk-fading-circle .sk-circle12 {
+          transform: rotate(330deg); 
+}
+.sk-fading-circle .sk-circle2::before {
+          animation-delay: -911ms; 
+}
+.sk-fading-circle .sk-circle3::before {
+          animation-delay: -828ms; 
+}
+.sk-fading-circle .sk-circle4::before {
+          animation-delay: -745ms; 
+}
+.sk-fading-circle .sk-circle5::before {
+          animation-delay: -662ms; 
+}
+.sk-fading-circle .sk-circle6::before {
+          animation-delay: -579ms; 
+}
+.sk-fading-circle .sk-circle7::before {
+          animation-delay: -496ms; 
+}
+.sk-fading-circle .sk-circle8::before {
+          animation-delay: -413ms; 
+}
+.sk-fading-circle .sk-circle9::before {
+          animation-delay: -330ms;
+}
+.sk-fading-circle .sk-circle10::before {
+          animation-delay: -247ms;
+}
+.sk-fading-circle .sk-circle11::before {
+          animation-delay: -164ms;
+}
+.sk-fading-circle .sk-circle12::before {
+          animation-delay: -83ms;
+}
+
+@keyframes sk-circleFadeDelay {
+  0%, 39%, 100% { opacity: 0.5; }
+  40% { opacity: 1; } 
+}
